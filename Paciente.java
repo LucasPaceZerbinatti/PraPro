@@ -7,16 +7,16 @@ private String sobrenome;
 private String email;
 private String telefone;
 private Date dataNascimento;
-private String CPF;
+private String cpf;
 private String estado;
 
-    public Paciente(int idPaciente, String nomePaciente, String sobrenome, String email, String telefone, String CPF, String estado, Date dataNascimento) {
+    public Paciente(int idPaciente, String nomePaciente, String sobrenome, String email, String telefone, String cpf, String estado, Date dataNascimento) {
         this.idPaciente = idPaciente;
         this.nomePaciente = nomePaciente;
         this.sobrenome = sobrenome;
         this.email = email;
         this.telefone = telefone;
-        this.CPF = CPF;
+        this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.estado = estado;
         
