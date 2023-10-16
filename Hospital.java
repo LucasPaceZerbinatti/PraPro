@@ -26,10 +26,10 @@ public class Hospital {
             ResultSet resultado = stmt.executeQuery();
             int i = 0;
             while (resultado.next()){
-                PreparedStatement stmtSenha = con.prepareStatement("select * from Hospital.UsernameDoctor where CRM = "+resultado.getInt("CRM"));
+                PreparedStatement stmtSenha = con.prepareStatement("Select * from Hospital.UsernameDoctor where CRM = "+resultado.getInt("CRM"));
                 ResultSet resultadoSenha = stmtSenha.executeQuery();
                 Medico[] medicos = new Medico[500];
-                String senha = resultadoSenha.getString("senha");
+                resultadoSenha.next();
                 Medico medico = new Medico(resultado.getInt("CRM"), resultado.getString("nomeMedico"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultado.getFloat("salario"), resultadoSenha.getString("senha"));
                 PreparedStatement stmtEspec = con.prepareStatement("select s.nomeEspecializacao from "+
                 "Hospital.DoctorSpecialization ds, "+
@@ -47,7 +47,7 @@ public class Hospital {
                 i = i + 1;
             }
         } catch (Exception e) {
-            // TODO: handle exception
+           System.out.println(e.getMessage());
         }
     }
 
