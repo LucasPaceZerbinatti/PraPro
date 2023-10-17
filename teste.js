@@ -8,9 +8,8 @@ net.createServer (function(sock) {
     console.log('CONNECTED: '+ sock.remoteAddress+':'+ sock.remotePort)
     sock.on('data', function(data){
         console.log(data.toString())
-        var bufStr = 'teste'
-        var buf = Buffer.from(bufStr, 'utf8');
-        sock.write(buf)
+        var bufStr = new Buffer("teste")
+        sock.write(bufStr)
     })
     sock.on('close',function(data){
         console.log('closed:'+sock.remoteAddress+' '+ sock.remotePort)
