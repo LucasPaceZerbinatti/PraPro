@@ -31,7 +31,6 @@ public class Hospital {
             ConnectionND conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
 
             System.out.print("Conectado a  " + conexao.getAddress());
-            System.out.print("Mensagem a enviar: ");
             String mensagem = "givas gay";
             conexao.sendMessage(mensagem);
             System.out.println(conexao.getMessage());

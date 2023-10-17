@@ -27,7 +27,7 @@ class ConnectionND {
         try{
             return in.readLine();
         } catch (IOException e){
-            return null;
+            return e.getMessage();
         }
     }
     public boolean sendMessage(String str){
