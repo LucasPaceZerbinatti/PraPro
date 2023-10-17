@@ -1,5 +1,6 @@
+import java.io.IOException;
+import java.net.Socket;
 import java.sql.*;
-import javax.sql.*;
 public class Hospital {
     public static Atendente[] atendentes = new Atendente[500];
     public static Medico[] medicos = new Medico[500];
@@ -8,13 +9,13 @@ public class Hospital {
     public static int qtsMedicos = 0;
     public static int qtsPacientes = 0;
     public static Connection con;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
             System.setProperty("java.net.preferIPv6Addresses", "true");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (Exception e) {
-            // TODO: handle exception
+            System.out.println(e.getMessage());
         }
         
         try {
@@ -27,8 +28,17 @@ public class Hospital {
         adicionaAtendentes();
         adicionaPacientes();
         adicionaConsultas();
-    }
+            ConnectionND conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
 
+            System.out.print("Conectado a  " + conexao.getAddress());
+            System.out.print("Mensagem a enviar: ");
+            String mensagem = "givas gay";
+            conexao.sendMessage(mensagem);
+            System.out.println(conexao.getMessage());
+            conexao.close();
+            
+            
+    }
     public static void adiconaMedicos(){
         try {
             PreparedStatement stmt = con.prepareStatement("Select * from Hospital.doctor");
@@ -97,8 +107,7 @@ public class Hospital {
             PreparedStatement stmt = con.prepareStatement("select * from Hospital.Query");
             ResultSet resultado = stmt.executeQuery();
             while (resultado.next()){
-                Medico teste = Vetores.buscaMedico(resultado.getInt("CRM"));
-                Consulta consulta = new Consulta(resultado.getInt("idConsulta"), resultado.getDate("horaInicio"), resultado.getDate("horaFim"), resultado.getString("observacoes"), Vetores.buscaMedico(resultado.getInt("CRM")), Vetores.buscaPaciente(resultado.getInt("idPaciente")), resultado.getBoolean("concluido"), resultado.getString("medicamentos"));
+                Consulta consulta = new Consulta(resultado.getInt("idConsulta"), resultado.getTimestamp("horaInicio"), resultado.getTimestamp("horaFim"), resultado.getString("observacoes"), Vetores.buscaMedico(resultado.getInt("CRM")), Vetores.buscaPaciente(resultado.getInt("idPaciente")), resultado.getBoolean("concluido"), resultado.getString("medicamentos"));
                 consultas[i] = consulta;
                 System.out.println(consultas[i].toString());
                 i += 1;
