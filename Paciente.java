@@ -21,5 +21,13 @@ private String estado;
         this.estado = estado;
         
     }
+
+    public String toString() {
+        return this.idPaciente+" "+this.nomePaciente+" "+this.sobrenome+" "+this.email+" "+this.telefone+" "+this.cpf+" "+this.dataNascimento+" "+this.estado;
+    }
+    
+    public int getIdPaciente(){
+        return this.idPaciente;
+    }
     }
 

@@ -8,8 +8,9 @@ public class Consulta {
     private Medico medico;
     private Paciente paciente;
     private boolean concluido;
+    private String medicamento;
     
-    public Consulta(int idConsulta, Date horaInicio, Date horaFim, String observacoes, Medico medico, Paciente paciente, boolean concluido) {
+    public Consulta(int idConsulta, Date horaInicio, Date horaFim, String observacoes, Medico medico, Paciente paciente, boolean concluido, String medicamento) {
         this.idConsulta = idConsulta;
         this.horaFim = horaFim;
         this.horaInicio = horaInicio;
@@ -17,6 +18,7 @@ public class Consulta {
         this.medico = medico;
         this.paciente = paciente;
         this.concluido = concluido;
+        this.medicamento = medicamento;
     }
     public Consulta(int idConsulta, Date horaInicio, String observacoes, Medico medico, Paciente paciente) {
         this.idConsulta = idConsulta;
@@ -24,5 +26,8 @@ public class Consulta {
         this.observacoes = observacoes;
         this.medico = medico;
         this.paciente = paciente;
+    }
+    public String toString() {
+        return this.idConsulta+" "+this.horaFim+" "+this.horaInicio+" "+this.observacoes+" "+this.medico+" "+this.paciente+" "+this.concluido+" "+this.medicamento;
     }
 }

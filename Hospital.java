@@ -3,6 +3,10 @@ import javax.sql.*;
 public class Hospital {
     public static Atendente[] atendentes = new Atendente[500];
     public static Medico[] medicos = new Medico[500];
+    public static Paciente[] pacientes = new Paciente[500];
+    public static Consulta[] consultas = new Consulta[500];
+    public static int qtsMedicos = 0;
+    public static int qtsPacientes = 0;
     public static Connection con;
     public static void main(String[] args) {
         String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
@@ -21,13 +25,14 @@ public class Hospital {
         }
         adiconaMedicos();
         adicionaAtendentes();
+        adicionaPacientes();
+        adicionaConsultas();
     }
 
     public static void adiconaMedicos(){
         try {
             PreparedStatement stmt = con.prepareStatement("Select * from Hospital.doctor");
             ResultSet resultado = stmt.executeQuery();
-            int i = 0;
             while (resultado.next()){
                 PreparedStatement stmtSenha = con.prepareStatement("Select * from Hospital.UsernameDoctor where CRM = "+resultado.getInt("CRM"));
                 ResultSet resultadoSenha = stmtSenha.executeQuery();
@@ -43,9 +48,9 @@ public class Hospital {
                     String espec = resultadoEspec.getString("nomeEspecializacao");
                     medico.addEspec(espec);
                 }
-                medicos[i] = medico;
-                System.out.println(medicos[i].toString());
-                i = i + 1;
+                medicos[qtsMedicos] = medico;
+                System.out.println(medicos[qtsMedicos].toString());
+                qtsMedicos = qtsMedicos + 1;
             }
         } catch (Exception e) {
            System.out.println(e.getMessage());
@@ -65,6 +70,38 @@ public class Hospital {
             atendentes[i] = atendente;
             System.out.println(atendentes[i].toString());
             i += 1;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void adicionaPacientes() {
+        try {
+            PreparedStatement stmt = con.prepareStatement("select * from Hospital.Patient");
+            ResultSet resultado = stmt.executeQuery();
+            while (resultado.next()){
+                Paciente paciente = new Paciente(resultado.getInt("idPaciente"), resultado.getString("nomePaciente"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"),resultado.getString("CPF"),resultado.getString("estado"), resultado.getDate("dataNascimento"));
+                pacientes[qtsPacientes] = paciente;
+                System.out.println(pacientes[qtsPacientes].toString());
+                qtsPacientes += 1;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void adicionaConsultas() {
+        int i = 0;
+        try {
+            PreparedStatement stmt = con.prepareStatement("select * from Hospital.Query");
+            ResultSet resultado = stmt.executeQuery();
+            while (resultado.next()){
+                Medico teste = Vetores.buscaMedico(resultado.getInt("CRM"));
+                Consulta consulta = new Consulta(resultado.getInt("idConsulta"), resultado.getDate("horaInicio"), resultado.getDate("horaFim"), resultado.getString("observacoes"), Vetores.buscaMedico(resultado.getInt("CRM")), Vetores.buscaPaciente(resultado.getInt("idPaciente")), resultado.getBoolean("concluido"), resultado.getString("medicamentos"));
+                consultas[i] = consulta;
+                System.out.println(consultas[i].toString());
+                i += 1;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

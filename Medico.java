@@ -35,6 +35,10 @@ private String[] espec = new String[0];
     public String[] getEspec(){
         return this.espec;
     }
+
+    public int getCRM(){
+        return this.CRM;
+    }
     
 
 }
