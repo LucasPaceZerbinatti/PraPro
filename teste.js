@@ -3,30 +3,29 @@ var net = require('net')
 const { buffer } = require('stream/consumers')
 var HOST = '127.0.0.1'
 var PORT = '8000'
-var dados
 var receberDados
-var mensagem = ''
+var mensagem = "conexao"
+var dados = null
 
-function receberDados() {
-    net.createServer (function(sock) {
-        console.log('CONNECTED: '+ sock.remoteAddress+':'+ sock.remotePort)
-        
+function comecar(){
+    net.createServer (function(sock) {    
+        function receberDados(){
             sock.on('data', function(data){
                 console.log(data.toString())
-                //sock.write('teste2')
-                sock.write(mensagem)
-                sock.end()
                 dados = data
-                     
             })
-            sock.on('close',function(data){
-                console.log('closed:'+sock.remoteAddress+' '+ sock.remotePort)
-                
-            })
+        }    
+        function escreverDados(mensagem){
+            sock.write(mensagem)
+            sock.end()
+        }
+        receberDados()
+        escreverDados(mensagem)
+            
         }) .listen(PORT, HOST)
-
-} 
-receberDados() 
-
-
-
+}
+comecar()
+setTimeout(function() {
+    dados = "teste"; 
+}, 500);
+exports.dados = dados

@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/cc23145/PraPro/issues"
   },
-  "homepage": "https://github.com/cc23145/PraPro#readme"
+  "homepage": "https://github.com/cc23145/PraPro#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
+  }
 }
