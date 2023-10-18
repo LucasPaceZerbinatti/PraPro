@@ -29,10 +29,13 @@ public class Hospital {
         adicionaPacientes();
         adicionaConsultas();
             ConnectionND conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
-
             System.out.print("Conectado a  " + conexao.getAddress());
             String mensagem = "givas gay";
             conexao.sendMessage(mensagem);
+            System.out.println(conexao.getMessage());
+            conexao.close();
+            conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
+            conexao.sendMessage("irineu, voce não sabe nem eu");
             System.out.println(conexao.getMessage());
             conexao.close();
             
