@@ -25,7 +25,4 @@ function comecar(){
         }) .listen(PORT, HOST)
 }
 comecar()
-setTimeout(function() {
-    dados = "teste"; 
-}, 500);
-exports.dados = dados
+
