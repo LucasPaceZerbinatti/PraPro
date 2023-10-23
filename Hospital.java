@@ -10,7 +10,7 @@ public class Hospital {
     public static int qtsPacientes = 0;
     public static Connection con;
     public static void main(String[] args) throws IOException{
-        String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
+ /*     String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
             System.setProperty("java.net.preferIPv6Addresses", "true");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -27,7 +27,7 @@ public class Hospital {
         adiconaMedicos();
         adicionaAtendentes();
         adicionaPacientes();
-        adicionaConsultas();
+        adicionaConsultas(); */  
             ConnectionND conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
             System.out.print("Conectado a  " + conexao.getAddress());
             String mensagem = "givas gay";
@@ -36,7 +36,6 @@ public class Hospital {
             conexao.close();
             conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
             conexao.sendMessage("irineu, voce não sabe nem eu");
-            System.out.println(conexao.getMessage());
             conexao.close();
             
             
