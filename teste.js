@@ -8,30 +8,34 @@ var receberDados
 var mensagem = "conexao"
 var dados = null
 const express = require('express')
+var cors = require('cors')
 const app = express()
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-    net.createServer (function(sock) {    
-            sock.on('data', function(data){
-                console.log(data.toString())
-                dados = data.toString()
-
-                app.get('/', (req, res) => {
-                  res.send(dados)
-                })
-            })
-        } ) .listen(PORT, HOST)
-
-
-
-
-
-/*app.get('/', (req, res) => {
-  res.send(dados)
-})
+const appJava = express()
+var bodyParser = require('body-parser');
+const { stringify } = require('querystring')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+var dadosJS
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})*/
+})
+app.use(cors())
+app.options('*', cors())
+
+app.post('/', function requestHandler(req, res) {
+  res.json(req.body)
+  console.log(stringify(req.body))
+  dadosJS = stringify(req.body)
+  enviarParaJava(dadosJS)
+});
+
+
+appJava.listen(PORT, () => {
+  console.log("Ouvindo na porta do JAVA")
+})
+
+appJava.get('/', (req, res) => {
+  res.send("givas muito gay")
+  console.log("enviado")
+})
