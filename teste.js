@@ -25,9 +25,8 @@ app.options('*', cors())
 
 app.post('/', function requestHandler(req, res) {
   res.json(req.body)
-  console.log(stringify(req.body))
-  dadosJS = stringify(req.body)
-  enviarParaJava(dadosJS)
+  console.log(req.body.metodo)
+  enviarParaJava(req.body.metodo+","+req.body.dados1+","+req.body.dados2)
 });
 
 
@@ -35,6 +34,7 @@ function enviarParaJava(mensagem){
   console.log('escrevendo')
     var teste = net.createServer (function(sock) {  
     sock.write(mensagem)
+    console.log('escrito')
     sock.end()
     sock.on('data', function(data){
         console.log(data.toString())

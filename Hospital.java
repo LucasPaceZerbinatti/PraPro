@@ -34,15 +34,16 @@ public class Hospital {
             try {
                 conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
                 System.out.print("Conectado a  " + conexao.getAddress());
-                String dados = conexao.getMessage();
-                if (aux != dados){
-                    System.out.println(dados);
-                    switch (dados) {
-                        case "1=":
+                String dado = conexao.getMessage();
+                String[] dados = dado.split(",");
+                if (aux != dado){
+                    System.out.println(dados.toString());
+                    switch (dados[0]) {
+                        case "logar":
                             conexao.sendMessage("botao1");
                             conexao.close();
                             break;
-                        case "2=":
+                        case "2":
                             conexao.sendMessage("botao2");
                             conexao.close();
                             break;
@@ -50,7 +51,7 @@ public class Hospital {
                             break;
                     }
                 }
-                aux = dados;
+                aux = dado;
             }
             catch (Exception e){
                 continue;

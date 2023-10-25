@@ -1,10 +1,9 @@
-function Pegar(){
+
+function pegar(){
 axios.get('http://localhost:8080')
 .then(res => {
-    
     console.log(res)
-    let result = window.document.querySelector("#result")
-    result.innerHTML = res.data
+    return res.data
 })
 .catch(err => {
     console.error(err); 
@@ -12,7 +11,7 @@ axios.get('http://localhost:8080')
 }
 
 
-function Enviar(mensagem){
+function enviar(mensagem){
     axios.post("http://localhost:8080", mensagem)
 
       .then((response) => {
@@ -20,3 +19,4 @@ function Enviar(mensagem){
       })
      
 }
+

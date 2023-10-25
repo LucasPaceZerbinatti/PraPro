@@ -1,0 +1,66 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+#areaLogin {
+    letter-spacing: 1.2px;
+}
+#usuario, #senha {
+    letter-spacing: 1.2px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+}
+#imgHopt{
+    width: 80px;
+    height: 80px;
+}
+#login{
+    align-items: center;
+    padding-top: 10px;
+    border: black solid 1.3px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px;
+    line-height: 25px;
+    margin-top: 15%;
+    padding-bottom: 0;
+}
+
+#botao{
+    display: block;
+    text-align: center;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: none;
+    background-color: darkgray;
+    color: white;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    width: 400px;
+    height: 35px;
+}
+#botao:hover{
+    background-color: gray;
+    color: white;
+    cursor: pointer;
+}
+#texto{
+    opacity: 0.5;
+}
+.input{
+    width: 300px;
+}
+#admin{
+    background-color: gray;
+    color: wheat;
+    font-size: 15px;
+}
+#cadas{
+    color: black;
+}
+#cadas:hover{
+    color: gray;
+    font-size: 20px;
+}
