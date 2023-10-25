@@ -9,6 +9,7 @@ public class Hospital {
     public static int qtsMedicos = 0;
     public static int qtsPacientes = 0;
     public static Connection con;
+    public static ConnectionND conexao;
     public static void main(String[] args) throws IOException{
  /*     String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
@@ -28,12 +29,36 @@ public class Hospital {
         adicionaAtendentes();
         adicionaPacientes();
         adicionaConsultas(); */  
-            ConnectionND conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
-            System.out.print("Conectado a  " + conexao.getAddress());
-            conexao.sendMessage("teste");
-            System.out.println(conexao.getMessage());
-            conexao.close();
-            
+        String aux = null;
+        while (true){
+            try {
+                conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
+                System.out.print("Conectado a  " + conexao.getAddress());
+                String dados = conexao.getMessage();
+                if (aux != dados){
+                    System.out.println(dados);
+                    switch (dados) {
+                        case "1=":
+                            conexao.sendMessage("botao1");
+                            conexao.close();
+                            break;
+                        case "2=":
+                            conexao.sendMessage("botao2");
+                            conexao.close();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                aux = dados;
+            }
+            catch (Exception e){
+                continue;
+            }
+
+
+        }
+         
             
             
             

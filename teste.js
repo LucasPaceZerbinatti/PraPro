@@ -31,11 +31,22 @@ app.post('/', function requestHandler(req, res) {
 });
 
 
-appJava.listen(PORT, () => {
-  console.log("Ouvindo na porta do JAVA")
-})
+function enviarParaJava(mensagem){
+  console.log('escrevendo')
+    var teste = net.createServer (function(sock) {  
+    sock.write(mensagem)
+    sock.end()
+    sock.on('data', function(data){
+        console.log(data.toString())
+        dados = data.toString()
+        teste.close()
+        app.get('/', (req, res) => {
+          res.send(dados)
+          
+        })
+    })
+} ) .listen(PORT, HOST)
+  
 
-appJava.get('/', (req, res) => {
-  res.send("givas muito gay")
-  console.log("enviado")
-})
+}
+
