@@ -1,4 +1,6 @@
+var data
 var irineu
+var achou = false
 function mudarPagina(){
     let opcoesDeCadastro = document.querySelectorAll(".opcoes");
     let result = window.document.querySelector("#result");
@@ -37,39 +39,47 @@ function mudarPagina(){
 function logar(param){
     if (param != " "){
         enviar({'metodo':'logar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
-        
+        axios.get('http://localhost:8080')
+        .then(res => {
+            console.log(res)
+            irineu = res.data
+            achou = true
+            alert(irineu)
+            window.open('medico.html')
+            
+                
+        })
+        .catch(err => {
+            console.error(err); 
+            return err
+        })
     }
-       
-    
-}
-logar(" ")
+    }
 
 function getResultado(){
     pegar()
-    console.log(irineu)
+    console.log(data)
 }
 
-function pegar(){
+function pegar() {
+
     axios.get('http://localhost:8080')
     .then(res => {
         console.log(res)
         irineu = res.data
-        return irineu
+        achou = true
+        
     })
     .catch(err => {
         console.error(err); 
         return err
     })
-    }
+  }
     
     
     function enviar(mensagem){
         axios.post("http://localhost:8080", mensagem)
         
-          .then((response) => {
-            console.log(response);
-          })
-         
     }
     
     
