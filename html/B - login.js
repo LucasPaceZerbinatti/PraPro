@@ -36,45 +36,45 @@ function mudarPagina(){
         ErrorEvent("É necessário marcar a opção de Login!!!")
     }
 }
-function logar(param){
-    if (param != " "){
+const logar = async() => {
+    
         enviar({'metodo':'logar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
-        axios.get('http://localhost:8080')
+        const response = await axios.get('http://localhost:8080')
+        irineu = response.data
+        if (irineu == true){
+            window.open('file:///C:/Users/u23145/Documents/GitHub/PraPro/html/C%20-%20medico.html')
+        }
+        else{
+            alert('não')
+        }
+        
+      /*  axios.get('http://localhost:8080')
         .then(res => {
             console.log(res)
             irineu = res.data
-            achou = true
+            console.log(irineu)
             alert(irineu)
-            window.open('medico.html')
             
                 
         })
         .catch(err => {
             console.error(err); 
             return err
-        })
+        }) */
+
+
     }
-    }
+    
 
 function getResultado(){
     pegar()
     console.log(data)
 }
 
-function pegar() {
-
-    axios.get('http://localhost:8080')
-    .then(res => {
-        console.log(res)
-        irineu = res.data
-        achou = true
-        
-    })
-    .catch(err => {
-        console.error(err); 
-        return err
-    })
-  }
+const getData = async () => {
+    const response = await axios.get('http://localhost:8080')
+    irineu = response.data
+}
     
     
     function enviar(mensagem){

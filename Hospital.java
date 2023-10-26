@@ -10,8 +10,9 @@ public class Hospital {
     public static int qtsPacientes = 0;
     public static Connection con;
     public static ConnectionND conexao;
+    public static String[] dados;
     public static void main(String[] args) throws IOException{
- /*     String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
+      String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
             System.setProperty("java.net.preferIPv6Addresses", "true");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -28,25 +29,22 @@ public class Hospital {
         adiconaMedicos();
         adicionaAtendentes();
         adicionaPacientes();
-        adicionaConsultas(); */  
+        adicionaConsultas();   
         String aux = null;
         while (true){
             try {
                 conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
                 System.out.print("Conectado a  " + conexao.getAddress());
                 String dado = conexao.getMessage();
-                String[] dados = dado.split(",");
-                if (aux != dado){
+                dados = dado.split(",");
+                if (aux != dado && dados[0] != "inicio"){
                     System.out.println(dados.toString());
                     switch (dados[0]) {
                         case "logar":
-                            conexao.sendMessage("botao1");
+                            logar();
                             conexao.close();
                             break;
-                        case "2":
-                            conexao.sendMessage("botao2");
-                            conexao.close();
-                            break;
+
                         default:
                             break;
                     }
@@ -59,11 +57,24 @@ public class Hospital {
 
 
         }
-         
-            
-            
             
     }
+    public static void logar(){
+        int CRM = Integer.parseInt(dados[1]);
+        Medico medico = Vetores.buscaMedico(CRM);
+        String senha = dados[2];
+        if (medico == null || !senha.equals(medico.getSenha())){
+            conexao.sendMessage("false");
+        }
+        
+        else{
+            conexao.sendMessage("true");
+        
+        }
+
+
+    }
+
     public static void adiconaMedicos(){
         try {
             PreparedStatement stmt = con.prepareStatement("Select * from Hospital.doctor");

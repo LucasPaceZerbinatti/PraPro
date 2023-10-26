@@ -17,8 +17,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 var dadosJS
 
+console.log("teste")
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
+  
 })
 app.use(cors())
 app.options('*', cors())
@@ -41,12 +44,15 @@ function enviarParaJava(mensagem){
         dados = data.toString()
         teste.close()
         app.get('/', (req, res) => {
-          res.send(dados)
-          
-        })
-    })
+        res.send(dados)
+          })
+        
+
+      }
+
+    )
 } ) .listen(PORT, HOST)
   
 
-}
+} 
 

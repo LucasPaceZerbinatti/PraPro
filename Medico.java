@@ -39,6 +39,10 @@ private String[] espec = new String[0];
     public int getCRM(){
         return this.CRM;
     }
-    
-
+    public String getEmail(){
+        return this.email;
+    }
+    public String getSenha(){
+        return this.senha;
+    }
 }
