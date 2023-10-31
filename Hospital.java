@@ -11,6 +11,7 @@ public class Hospital {
     public static Connection con;
     public static ConnectionND conexao;
     public static String[] dados;
+    public static String mensagem;
     public static void main(String[] args) throws IOException{
       String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
@@ -42,6 +43,7 @@ public class Hospital {
                     switch (dados[0]) {
                         case "logar":
                             logar();
+                            conexao.sendMessage(mensagem);
                             conexao.close();
                             break;
 
@@ -60,15 +62,21 @@ public class Hospital {
             
     }
     public static void logar(){
-        int CRM = Integer.parseInt(dados[1]);
+        int CRM;
+        try {
+            CRM = Integer.parseInt(dados[1]);
+        } catch (Exception e) {
+            CRM = 0;
+        }
+        System.out.println(CRM);
         Medico medico = Vetores.buscaMedico(CRM);
         String senha = dados[2];
-        if (medico == null || !senha.equals(medico.getSenha())){
-            conexao.sendMessage("false");
+        if (medico != null && senha.equals(medico.getSenha())){
+            mensagem = "true";
         }
         
         else{
-            conexao.sendMessage("true");
+            mensagem = "false";
         
         }
 
@@ -83,15 +91,15 @@ public class Hospital {
                 PreparedStatement stmtSenha = con.prepareStatement("Select * from Hospital.UsernameDoctor where CRM = "+resultado.getInt("CRM"));
                 ResultSet resultadoSenha = stmtSenha.executeQuery();
                 resultadoSenha.next();
-                Medico medico = new Medico(resultado.getInt("CRM"), resultado.getString("nomeMedico"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultado.getFloat("salario"), resultadoSenha.getString("senha"));
-                PreparedStatement stmtEspec = con.prepareStatement("select s.nomeEspecializacao from "+
+                Medico medico = new Medico(resultado.getInt("CRM"), resultado.getString("nome"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultado.getFloat("salario"), resultadoSenha.getString("senha"));
+                PreparedStatement stmtEspec = con.prepareStatement("select s.nome from "+
                 "Hospital.DoctorSpecialization ds, "+
                 "Hospital.Specialization s "+
                 "where ds.CRM = "+resultado.getInt("CRM")+" and ds.idEspecializacao = s.idEspecializacao");
                 ResultSet resultadoEspec = stmtEspec.executeQuery();
 
                 while (resultadoEspec.next()) {
-                    String espec = resultadoEspec.getString("nomeEspecializacao");
+                    String espec = resultadoEspec.getString("nome");
                     medico.addEspec(espec);
                 }
                 medicos[qtsMedicos] = medico;
@@ -112,7 +120,7 @@ public class Hospital {
             PreparedStatement stmtSenha = con.prepareStatement("Select senha from Hospital.UsernameAttendant where idAtendente = "+resultado.getInt("idAtendente"));
             ResultSet resultadoSenha = stmtSenha.executeQuery();
             resultadoSenha.next();
-            Atendente atendente = new Atendente(resultado.getInt("idAtendente"), resultado.getString("nomeAtendente"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultadoSenha.getString("senha"), resultado.getString("CPF"), resultado.getDouble("salario"));
+            Atendente atendente = new Atendente(resultado.getInt("idAtendente"), resultado.getString("nome"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultadoSenha.getString("senha"), resultado.getString("CPF"), resultado.getDouble("salario"));
             atendentes[i] = atendente;
             System.out.println(atendentes[i].toString());
             i += 1;
@@ -127,7 +135,7 @@ public class Hospital {
             PreparedStatement stmt = con.prepareStatement("select * from Hospital.Patient");
             ResultSet resultado = stmt.executeQuery();
             while (resultado.next()){
-                Paciente paciente = new Paciente(resultado.getInt("idPaciente"), resultado.getString("nomePaciente"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"),resultado.getString("CPF"),resultado.getString("estado"), resultado.getDate("dataNascimento"));
+                Paciente paciente = new Paciente(resultado.getInt("idPaciente"), resultado.getString("nome"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"),resultado.getString("CPF"),resultado.getString("estado"), resultado.getDate("dataNascimento"));
                 pacientes[qtsPacientes] = paciente;
                 System.out.println(pacientes[qtsPacientes].toString());
                 qtsPacientes += 1;

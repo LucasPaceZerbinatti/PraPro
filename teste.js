@@ -29,8 +29,18 @@ app.options('*', cors())
 app.post('/', function requestHandler(req, res) {
   res.json(req.body)
   console.log(req.body.metodo)
-  enviarParaJava(req.body.metodo+","+req.body.dados1+","+req.body.dados2)
-});
+  if (req.body.metodo != 'passar'){
+    enviarParaJava(req.body.metodo+","+req.body.dados1+","+req.body.dados2)
+  }
+  else{
+    console.log('passando')
+      app.get('/', (request, response) => {
+        console.log(req.body.dados1+","+req.body.dados2)
+        response.json({'email':req.body.dados1,'senha':req.body.dados2})
+          })
+    }
+  }
+);
 
 
 function enviarParaJava(mensagem){
@@ -43,7 +53,7 @@ function enviarParaJava(mensagem){
         console.log(data.toString())
         dados = data.toString()
         teste.close()
-        app.get('/', (req, res) => {
+        app.get('/resultado/', (req, res) => {
         res.send(dados)
           })
         

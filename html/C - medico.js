@@ -12,7 +12,8 @@
     var mesEscrito
     diasMes = 1
 
-    calendario()
+
+
 
     
 
@@ -132,3 +133,37 @@ function fecharBox(){
 function today(){
     resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()" style="color:blue;">${diasMes}<div>`
 }
+
+const teste = async() => {
+    const response = await axios.get('http://localhost:8080')
+    data1 = response.data
+    console.log(data1.senha)
+    enviar({'metodo':'logar','dados1':data1.email,'dados2':data1.senha})
+    setTimeout(teste2,10000)
+
+
+}
+
+
+function enviar(mensagem){
+    axios.post("http://localhost:8080", mensagem)
+    
+}
+
+const teste2 = async() =>{
+    const response2 = await axios.get('http://localhost:8080/resultado/')
+    data2 = response2.data
+    console.log(data2)
+    if (data2 == true){
+        result = window.document.querySelector("#result");
+        resultCalendario = window.document.querySelector("#resultCalendario");
+        aparece = window.document.querySelector("#aparece");
+        calendario()
+    }
+    else{
+        botao = window.document.querySelector(".botao")
+        botao.innerHTML = 'senha incorreta'
+    }
+}
+
+teste()

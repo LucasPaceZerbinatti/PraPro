@@ -1,6 +1,8 @@
 var data
 var irineu
 var achou = false
+var email
+var senha
 function mudarPagina(){
     let opcoesDeCadastro = document.querySelectorAll(".opcoes");
     let result = window.document.querySelector("#result");
@@ -38,15 +40,8 @@ function mudarPagina(){
 }
 const logar = async() => {
     
-        enviar({'metodo':'logar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
-        const response = await axios.get('http://localhost:8080')
-        irineu = response.data
-        if (irineu == true){
-            window.open('file:///C:/Users/u23145/Documents/GitHub/PraPro/html/C%20-%20medico.html')
-        }
-        else{
-            alert('não')
-        }
+        enviar({'metodo':'passar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
+
         
       /*  axios.get('http://localhost:8080')
         .then(res => {
@@ -64,6 +59,11 @@ const logar = async() => {
 
 
     }
+
+function pegaValor(){
+    email = window.document.querySelector('#email').value
+    senha = window.document.querySelector('#senha').value
+}
     
 
 function getResultado(){
