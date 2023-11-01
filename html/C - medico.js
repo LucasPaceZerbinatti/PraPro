@@ -2,6 +2,9 @@
     let result = window.document.querySelector("#result");
     let resultCalendario = window.document.querySelector("#resultCalendario");
     let aparece = window.document.querySelector("#aparece");
+    var vetorData
+    var i
+    var vetorConsulta
 
     const data = new Date()
 
@@ -18,7 +21,6 @@
     
 
 function calendario() { 
-
     switch (mes) {
         case 0:
             mesEscrito = "Janeiro"
@@ -74,24 +76,39 @@ function calendario() {
     result.innerHTML = `<h1>${ano} ${mesEscrito}</h1>`
 
     resultCalendario.innerHTML = ``
+    enviar({'metodo':'calendario','dados1':mes+1,'dados2':ano})
+    setTimeout(pegaCalendario, 500)
+
+}
+
+function calendario2(){
+    i = 0
     while (diasMes <= qntsMes) {
         if(diasMes == dia && mesFixo == mes){
             today()
         }
 
         else{ // médicos receberão um select apenas de SUAS CONSULTAS
-            resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()">${diasMes}<div>`
+            resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()">${diasMes} - ${vetorData[i]}<div>`
         }
+        i += 1
         diasMes += 1
     }
 }
-
+const pegaCalendario = async() =>{
+    const response2 = await axios.get('http://localhost:8080/resultado/')
+    data2 = response2.data
+    console.log(data2)
+    vetorData = data2.split(',')
+    console.log(vetorData)
+    calendario2()
+}
 function esquerda() {
-    if(mes != 1){
+    if(mes != 0){
         mes -= 1
     }
     else{
-        mes = 12
+        mes = 11
         ano -= 1
     }
     diasMes = 1
@@ -99,11 +116,11 @@ function esquerda() {
 }
 
 function direita() {
-    if(mes != 12){
+    if(mes != 11){
         mes += 1
     }
     else{
-        mes = 1
+        mes = 0
         ano += 1
     }
     diasMes = 1
@@ -119,19 +136,28 @@ function calcular_bissexto() {
     
 }
 
-function dim(){
-    let mensagem = "Julio Pinto 16/04/2023 16:30\n";
+const pegaConsultas = async() =>{
+    const response2 = await axios.get('http://localhost:8080/resultado/')
+    data2 = response2.data
+    vetorConsulta = data2.split(",")
+    dim2()
 
-    aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly>${mensagem}${mensagem}</textarea>`
+}
+function dim(){
+    enviar({'metodo':'consultaCalendario','dados1':dia+","+mes,'dados2':ano})
+    setTimeout(pegaConsultas,500)
+
+}
+function dim2(){
+    aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly>${vetorConsulta[0]}</textarea>`
     aparece.innerHTML += `<button id="bota" onclick="fecharBox()">X</button>`
 }
-
 function fecharBox(){
     aparece.innerHTML = ``
 }
 
 function today(){
-    resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()" style="color:blue;">${diasMes}<div>`
+    resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()" style="color:blue;">${diasMes} - ${vetorData[i]}<div>`
 }
 
 const teste = async() => {
@@ -139,7 +165,7 @@ const teste = async() => {
     data1 = response.data
     console.log(data1.senha)
     enviar({'metodo':'logar','dados1':data1.email,'dados2':data1.senha})
-    setTimeout(teste2,10000)
+    setTimeout(teste2,500)
 
 
 }

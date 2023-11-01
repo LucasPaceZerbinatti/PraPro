@@ -16,6 +16,8 @@ const { stringify } = require('querystring')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 var dadosJS
+var dados1
+var dados2
 
 console.log("teste")
 
@@ -28,20 +30,23 @@ app.options('*', cors())
 
 app.post('/', function requestHandler(req, res) {
   res.json(req.body)
+  dados1 = req.body.dados1
+  dados2 = req.body.dados2
   console.log(req.body.metodo)
+  console.log(req.body.dados1)
   if (req.body.metodo != 'passar'){
     enviarParaJava(req.body.metodo+","+req.body.dados1+","+req.body.dados2)
   }
   else{
     console.log('passando')
-      app.get('/', (request, response) => {
-        console.log(req.body.dados1+","+req.body.dados2)
-        response.json({'email':req.body.dados1,'senha':req.body.dados2})
-          })
     }
   }
 );
 
+app.get('/', (request, response) => {
+  console.log(dados1+","+dados2)
+  response.json({'email':dados1,'senha':dados2})
+    })
 
 function enviarParaJava(mensagem){
   console.log('escrevendo')

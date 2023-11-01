@@ -12,6 +12,7 @@ public class Hospital {
     public static ConnectionND conexao;
     public static String[] dados;
     public static String mensagem;
+    public static int CRM;
     public static void main(String[] args) throws IOException{
       String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
@@ -46,7 +47,16 @@ public class Hospital {
                             conexao.sendMessage(mensagem);
                             conexao.close();
                             break;
-
+                        case "calendario":
+                            calendario();
+                            conexao.sendMessage(mensagem);
+                            conexao.close();
+                            break;
+                        case "consultaCalendario":
+                            consultaCalendario();
+                            conexao.sendMessage(mensagem);
+                            conexao.close();
+                            break;
                         default:
                             break;
                     }
@@ -61,8 +71,28 @@ public class Hospital {
         }
             
     }
+
+    public static void consultaCalendario(){
+        mensagem = "";
+        int dia = Integer.parseInt(dados[1]);
+        int mes = Integer.parseInt(dados[2]);
+        int ano = Integer.parseInt(dados[3]);
+        try {
+            PreparedStatement stmtConsultas = con.prepareStatement("select p.nome, q.observacoes, q.medicamentos, q.concluido from "+
+            "Hospital.Query q, "+
+            "Hospital.Patient p "+
+            "where q.idPaciente = p.idPaciente and q.CRM = "+CRM+" and day(q.horaInicio) = "+dia+" and month(q.horaInicio) = "+mes+" and year(q.horaInicio) = "+ano);
+            ResultSet resultadoConsultas = stmtConsultas.executeQuery();
+            while (resultadoConsultas.next()){
+                mensagem += "Paciente: "+resultadoConsultas.getString("nome")+" | Observações: "+resultadoConsultas.getString("observacoes")+" | Medicamentos: "+resultadoConsultas.getString("medicamentos")+" | Concluido: "+resultadoConsultas.getInt("concluido");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     public static void logar(){
-        int CRM;
         try {
             CRM = Integer.parseInt(dados[1]);
         } catch (Exception e) {
@@ -80,8 +110,26 @@ public class Hospital {
         
         }
 
-
     }
+    public static void calendario(){
+        mensagem = "";
+        try {
+            int mes = Integer.parseInt(dados[1]);
+            int ano = Integer.parseInt(dados[2]);
+            for (int i = 1; i <= 31; i++){
+                PreparedStatement stmtData = con.prepareStatement("select count(Hospital.query.idConsulta) as quantos from Hospital.query where YEAR(horaInicio) = "+ano+" and MONTH(horaInicio) = "+mes+" and DAY(horaInicio) = "+i+" and CRM = "+CRM);
+                ResultSet resultadoData = stmtData.executeQuery();
+                while (resultadoData.next()){
+                    System.out.println(resultadoData.getInt("quantos"));
+                    mensagem += resultadoData.getInt("quantos") + ",";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        }
 
     public static void adiconaMedicos(){
         try {

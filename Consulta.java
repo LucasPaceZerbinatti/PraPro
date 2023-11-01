@@ -24,4 +24,74 @@ public class Consulta {
     public String toString() {
         return this.idConsulta+" "+this.horaFim+" "+this.horaInicio+" "+this.observacoes+" "+this.medico+" "+this.paciente+" "+this.concluido+" "+this.medicamento;
     }
+
+
+    public int getIdConsulta() {
+        return this.idConsulta;
+    }
+
+    public void setIdConsulta(int idConsulta) {
+        this.idConsulta = idConsulta;
+    }
+
+    public Timestamp getHoraInicio() {
+        return this.horaInicio;
+    }
+
+    public void setHoraInicio(Timestamp horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public Timestamp getHoraFim() {
+        return this.horaFim;
+    }
+
+    public void setHoraFim(Timestamp horaFim) {
+        this.horaFim = horaFim;
+    }
+
+    public String getObservacoes() {
+        return this.observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public Medico getMedico() {
+        return this.medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public Paciente getPaciente() {
+        return this.paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public boolean isConcluido() {
+        return this.concluido;
+    }
+
+    public boolean getConcluido() {
+        return this.concluido;
+    }
+
+    public void setConcluido(boolean concluido) {
+        this.concluido = concluido;
+    }
+
+    public String getMedicamento() {
+        return this.medicamento;
+    }
+
+    public void setMedicamento(String medicamento) {
+        this.medicamento = medicamento;
+    }
+
 }
