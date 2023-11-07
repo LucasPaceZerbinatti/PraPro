@@ -77,6 +77,8 @@ public class Hospital {
         int dia = Integer.parseInt(dados[1]);
         int mes = Integer.parseInt(dados[2]);
         int ano = Integer.parseInt(dados[3]);
+        String texto;
+        mes+=1;
         try {
             PreparedStatement stmtConsultas = con.prepareStatement("select p.nome, q.observacoes, q.medicamentos, q.concluido from "+
             "Hospital.Query q, "+
@@ -84,7 +86,13 @@ public class Hospital {
             "where q.idPaciente = p.idPaciente and q.CRM = "+CRM+" and day(q.horaInicio) = "+dia+" and month(q.horaInicio) = "+mes+" and year(q.horaInicio) = "+ano);
             ResultSet resultadoConsultas = stmtConsultas.executeQuery();
             while (resultadoConsultas.next()){
-                mensagem += "Paciente: "+resultadoConsultas.getString("nome")+" | Observações: "+resultadoConsultas.getString("observacoes")+" | Medicamentos: "+resultadoConsultas.getString("medicamentos")+" | Concluido: "+resultadoConsultas.getInt("concluido");
+                if (resultadoConsultas.getInt("concluido") == 1){
+                    texto = "finalizada";
+                }
+                else {
+                    texto = "pendente";
+                }
+                mensagem += "Paciente: "+resultadoConsultas.getString("nome")+" | Obs: "+resultadoConsultas.getString("observacoes")+" | Medicamentos: "+resultadoConsultas.getString("medicamentos")+" | Estado: "+texto+"\n";
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -55,8 +55,8 @@ function enviarParaJava(mensagem){
     console.log('escrito')
     sock.end()
     sock.on('data', function(data){
-        console.log(data.toString())
         dados = data.toString()
+        console.log(Buffer.from(data, 'utf-8').toString())
         teste.close()
         app.get('/resultado/', (req, res) => {
         res.send(dados)

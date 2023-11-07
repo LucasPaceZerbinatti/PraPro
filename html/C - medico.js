@@ -77,7 +77,7 @@ function calendario() {
 
     resultCalendario.innerHTML = ``
     enviar({'metodo':'calendario','dados1':mes+1,'dados2':ano})
-    setTimeout(pegaCalendario, 500)
+    setTimeout(pegaCalendario, 2000)
 
 }
 
@@ -89,7 +89,7 @@ function calendario2(){
         }
 
         else{ // médicos receberão um select apenas de SUAS CONSULTAS
-            resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()">${diasMes} - ${vetorData[i]}<div>`
+            resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim(${diasMes})">${diasMes}<div><p>${vetorData[i]}</p>`
         }
         i += 1
         diasMes += 1
@@ -143,9 +143,10 @@ const pegaConsultas = async() =>{
     dim2()
 
 }
-function dim(){
+function dim(dia){
     enviar({'metodo':'consultaCalendario','dados1':dia+","+mes,'dados2':ano})
-    setTimeout(pegaConsultas,500)
+    console.log(dia)
+    setTimeout(pegaConsultas,1000)
 
 }
 function dim2(){
@@ -165,7 +166,7 @@ const teste = async() => {
     data1 = response.data
     console.log(data1.senha)
     enviar({'metodo':'logar','dados1':data1.email,'dados2':data1.senha})
-    setTimeout(teste2,500)
+    setTimeout(teste2,1000)
 
 
 }
