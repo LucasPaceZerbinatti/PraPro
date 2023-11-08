@@ -9,19 +9,16 @@ body {
 h1{
     font-size: 25px;
 }
-#areatexto{
-    top: 120px;
-    left: 400.5px;
-    text-align: start;
-    position: absolute;
-    font-size: 25px;
-    border: solid 2px black;
-    border-radius: 10px;
-    margin: 10px;
+table, th, tr, td {
+    border: black; border-style: ridge; border-collapse: collapse; font-family:'Trebuchet MS'; width: 600px; background-color:lightgray; 
+}   
+table{
+    position: absolute; left: 31.3%; top: 5%;
 }
 
+
 #bota{
-    top: 125px;
+    top: 20px;
     left: 320px;
     text-align: start;
     position: relative;
@@ -42,6 +39,7 @@ h1{
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     flex-wrap: wrap;
     list-style: none;
+    margin-top: 60px;
 }
 
 #resultCalendario #calendario {
@@ -82,18 +80,65 @@ h1{
 }
 
 .botao {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    background: rgba(255, 255, 255, 0.25);    
     box-sizing: border-box;
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    width: 2.5rem;
-    height: 2.5rem;
+    border: 5px solid rgba(255, 255, 255, 0.18);
+    width: 3rem;
+    height: 5rem;
     font-weight: 800;
 }
 
 .botao:hover {
     width: 3rem;
-    height: 3rem;
+    height: 5rem;
     cursor: pointer;
+    animation: sombra 1s;
+    animation-fill-mode: forwards;
+}
+.botao:not(:hover){
+    animation: desombra 1s;
+}
+
+@keyframes sombra {
+    0% {
+        
+    }
+    100% {
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+}
+@keyframes desombra {
+    0% {
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+    100% {
+        box-shadow: none;
+    }
+
+}
+
+#result{
+    display: flex;
+    flex-flow: column;
+    text-orientation:upright;
+    writing-mode:vertical-rl;
+    position: absolute;
+    left: 3%;
+    top: 15%;
+    letter-spacing: -3px;
+    font-size: 40px;
+    opacity: 0.5;
+    
+}
+#botas{
+display: flex;
+width: 1050px;
+height: 765px;
+align-items: center;
+justify-content: center;
+justify-content: space-between;
+position: absolute;
+
 }

@@ -38,44 +38,9 @@ function mudarPagina(){
         ErrorEvent("É necessário marcar a opção de Login!!!")
     }
 }
-const logar = async() => {
-    
-        enviar({'metodo':'passar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
-
-        
-      /*  axios.get('http://localhost:8080')
-        .then(res => {
-            console.log(res)
-            irineu = res.data
-            console.log(irineu)
-            alert(irineu)
-            
-                
-        })
-        .catch(err => {
-            console.error(err); 
-            return err
-        }) */
-
-
+const logar = () => {
+        enviar({'metodo':'logar','dados1':window.document.querySelector('#email').value,'dados2':window.document.querySelector('#senha').value})
     }
-
-function pegaValor(){
-    email = window.document.querySelector('#email').value
-    senha = window.document.querySelector('#senha').value
-}
-    
-
-function getResultado(){
-    pegar()
-    console.log(data)
-}
-
-const getData = async () => {
-    const response = await axios.get('http://localhost:8080')
-    irineu = response.data
-}
-    
     
     function enviar(mensagem){
         axios.post("http://localhost:8080", mensagem)
