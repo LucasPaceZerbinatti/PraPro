@@ -1,61 +1,26 @@
 {
-  
-  "name": "prapro",
-  
-  "version": "1.0.0",
-  
-  "description": "",
-  
-  "main": "index.js",
-  
-  "scripts": {
-  
-    
-  "test": "echo \"Error: no test specified\" && exit 1"
-  
-  },
-  
-  "repository": {
-  
-    
-  "type": "git",
-  
-    
-  "url": "git+https://github.com/cc23145/PraPro.git"
-  
-  },
-  
-  "keywords": [],
-  
-  "author": "",
-  
-  "license": "ISC",
-  
-  "bugs": {
-  
-    
-  "url": "https://github.com/cc23145/PraPro/issues"
-  
-  },
-  
-  "homepage": "https://github.com/cc23145/PraPro#readme",
-  
-  "dependencies": {
-  
-    
-  "axios": "^1.5.1",
-  
-    
-  "cors": "^2.8.5",
-  
-    
-  "express": "^4.18.2",
-  
-    
-  "pug": "^3.0.2",
-  
-    
-  "shelljs": "^0.8.5"
-  
-  }
+  "name": "prapro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cc23145/PraPro.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cc23145/PraPro/issues"
+  },
+  "homepage": "https://github.com/cc23145/PraPro#readme",
+  "dependencies": {
+    "axios": "^1.5.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "shelljs": "^0.8.5"
+  }
 }

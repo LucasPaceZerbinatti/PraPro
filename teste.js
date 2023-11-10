@@ -49,13 +49,15 @@ app.get('/', (request, response) => {
     })
 
 function enviarParaJava(mensagem){
-  console.log('escrevendo')
+  PORT+=1
+  
     var teste = net.createServer (function(sock) {  
     sock.write(mensagem)
     console.log('escrito')
     sock.end()
     sock.on('data', function(data){
         dados = data.toString()
+        console.log(PORT)
         console.log(Buffer.from(data, 'utf-8').toString())
         teste.close()
         app.get('/resultado/', (req, res) => {
@@ -67,7 +69,7 @@ function enviarParaJava(mensagem){
 
     )
 } ) .listen(PORT, HOST)
-  
+PORT -= 1   
 
 } 
 

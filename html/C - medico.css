@@ -10,7 +10,7 @@ h1{
     font-size: 25px;
 }
 table, th, tr, td {
-    border: black; border-style: ridge; border-collapse: collapse; font-family:'Trebuchet MS'; width: 600px; background-color:lightgray; 
+    border: black; border-style: ridge; border-collapse: collapse; font-family:'Trebuchet MS'; width: 600px; background-color:lightgray; z-index: 6; 
 }   
 table{
     position: absolute; left: 31.3%; top: 5%;
@@ -26,12 +26,15 @@ table{
     border-radius: 8px;
     width: auto;
     height: auto;
+    z-index: 6;
 }
 
 #resultCalendario {
     font-weight: 800;
     font-size: 30px;
     margin: 1px 0 0;
+    z-index: 5;
+    position: absolute;
   }
   
 #resultCalendario {
@@ -40,6 +43,7 @@ table{
     flex-wrap: wrap;
     list-style: none;
     margin-top: 60px;
+    z-index: 5;
 }
 
 #resultCalendario #calendario {
@@ -58,17 +62,20 @@ table{
 
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
+    z-index: 5;
 }
 
 #resultCalendario #calendario .dias {    
     font-size: 2rem;
     margin: 0 0 1rem 0;
     font-weight: 500;
+    z-index: 5; 
 }
 
 .dias:hover{
     color: red;
     cursor: pointer;
+    z-index: 5;
 }
 
 #resultCalendario .hoje {
@@ -140,5 +147,6 @@ align-items: center;
 justify-content: center;
 justify-content: space-between;
 position: absolute;
+z-index: 1;
 
 }

@@ -77,7 +77,7 @@ function calendario() {
 
     resultCalendario.innerHTML = ``
     enviar({'metodo':'calendario','dados1':mes+1,'dados2':ano})
-    setTimeout(pegaCalendario, 500)
+    setTimeout(pegaCalendario, 2000)
 
 }
 
@@ -116,7 +116,7 @@ function esquerda() {
         ano -= 1
     }
     diasMes = 1
-    calendario()
+    setTimeout(calendario,500)
 }
 
 function direita() {
@@ -128,7 +128,8 @@ function direita() {
         ano += 1
     }
     diasMes = 1
-    calendario()
+    setTimeout(calendario,500)
+
 }
 
 function calcular_bissexto() {

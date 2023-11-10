@@ -13,6 +13,7 @@ public class Hospital {
     public static String[] dados;
     public static String mensagem;
     public static int CRM;
+    public static Conexaohttp conexaohttp;
     public static void main(String[] args) throws IOException{
       String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
@@ -32,34 +33,36 @@ public class Hospital {
         adicionaAtendentes();
         adicionaPacientes();
         adicionaConsultas();   
+
         String aux = null;
         while (true){
             try {
-                conexao  = new ConnectionND(new Socket("127.0.0.1",8000));
-                System.out.print("Conectado a  " + conexao.getAddress());
-                String dado = conexao.getMessage();
+                conexaohttp = new Conexaohttp();
+                conexaohttp.get();
+                String dado = conexaohttp.getData();
                 dados = dado.split(",");
                 if (aux != dado && dados[0] != "inicio"){
                     System.out.println(dados.toString());
                     switch (dados[0]) {
                         case "logar":
                             logar();
-                            conexao.sendMessage(mensagem);
-                            conexao.close();
+                            System.out.println("deu certo");
+                            conexaohttp.post(mensagem);
                             break;
                         case "calendario":
                             calendario();
-                            conexao.sendMessage(mensagem);
-                            conexao.close();
+                            System.out.println("deu certo");
+                            conexaohttp.post(mensagem);
                             break;
                         case "consultaCalendario":
                             consultaCalendario();
-                            conexao.sendMessage(mensagem);
-                            conexao.close();
+                            System.out.println("deu certo");
+                            conexaohttp.post(mensagem);
                             break;
                         default:
                             break;
                     }
+
                 }
                 aux = dado;
             }
