@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.*;
+import java.util.Arrays;
 public class Hospital {
     public static Atendente[] atendentes = new Atendente[500];
     public static Medico[] medicos = new Medico[500];
@@ -34,14 +35,15 @@ public class Hospital {
         adicionaPacientes();
         adicionaConsultas();   
 
-        String aux = null;
+        String[] aux = {};
         while (true){
             try {
                 conexaohttp = new Conexaohttp();
                 conexaohttp.get();
                 String dado = conexaohttp.getData();
                 dados = dado.split(",");
-                if (aux != dado && dados[0] != "inicio"){
+                if (Arrays.equals(aux, dados) == false){
+                    aux = dados;
                     System.out.println(dados.toString());
                     switch (dados[0]) {
                         case "logar":
@@ -64,7 +66,7 @@ public class Hospital {
                     }
 
                 }
-                aux = dado;
+                
             }
             catch (Exception e){
                 continue;

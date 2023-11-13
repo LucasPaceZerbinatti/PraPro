@@ -13,7 +13,6 @@ public class Conexaohttp {
 public Conexaohttp() throws IOException{
     this.url = new URL("http://localhost:8000");
     con = (HttpURLConnection) url.openConnection();
-    System.out.println(con.getResponseCode());
 }
 
 public void get() throws IOException{

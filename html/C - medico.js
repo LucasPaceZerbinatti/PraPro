@@ -77,7 +77,7 @@ function calendario() {
 
     resultCalendario.innerHTML = ``
     enviar({'metodo':'calendario','dados1':mes+1,'dados2':ano})
-    setTimeout(pegaCalendario, 2000)
+    pegaCalendario()
 
 }
 
@@ -100,10 +100,13 @@ function calendario2(){
     }
 }
 const pegaCalendario = async() =>{
-    const response2 = await axios.get('http://localhost:8080/calendario/')
-    data2 = response2.data
+    while (data2 == 'continue'){
+        const response2 = await axios.get('http://localhost:8080/calendario/')
+        data2 = response2.data
+    }
     console.log(data2)
     vetorData = data2.split(',')
+    data2 = 'continue'
     console.log(vetorData)
     calendario2()
 }
@@ -116,7 +119,8 @@ function esquerda() {
         ano -= 1
     }
     diasMes = 1
-    setTimeout(calendario,500)
+    fecharBox()
+    calendario()
 }
 
 function direita() {
@@ -128,7 +132,8 @@ function direita() {
         ano += 1
     }
     diasMes = 1
-    setTimeout(calendario,500)
+    fecharBox()
+    calendario()
 
 }
 
@@ -142,9 +147,13 @@ function calcular_bissexto() {
 }
 
 const pegaConsultas = async() =>{
-    const response2 = await axios.get('http://localhost:8080/consultas/')
-    data2 = response2.data
+    while (data2 == 'continue'){
+        const response2 = await axios.get('http://localhost:8080/calendario/')
+        data2 = response2.data
+    }
+    
     vetorConsulta = data2.split(",")
+    data2 = 'continue'
     console.log(vetorConsulta)
     dim2()
 
@@ -152,17 +161,24 @@ const pegaConsultas = async() =>{
 function dim(dia){
     enviar({'metodo':'consultaCalendario','dados1':dia+","+mes,'dados2':ano})
     console.log(dia)
-    setTimeout(pegaConsultas, 500)
+    pegaConsultas()
 }
 function dim2(){
-    var elemento = `<table><tr><th>INICIO</th><th>PACIENTE</th><th>OBSERVAÇÕES</th><th>MEDICAMENTOS</th><th>ESTADO</th>`
+    var elemento = `<table><tr><th>INICIO</th><th>PACIENTE</th><th>OBSERVAÇÕES</th><th>MEDICAMENTOS</th><th>CONCLUÍDO</th>`
     for (i = 0; i<vetorConsulta.length-1; i+=5){
-        elemento += `<tr><td>${vetorConsulta[i]}</td><td>${vetorConsulta[i+1]}</td><td>${vetorConsulta[i+2]}</td><td>${vetorConsulta[i+3]}</td><td>${vetorConsulta[i+4]}</td>`
+        if (vetorConsulta[i+4] == 'finalizada'){
+            var checkbox = "<input type='checkbox' checked></input>"
+        }
+        else{
+            var checkbox = "<input type='checkbox'></input>"
+        }
+        elemento += `<tr><td>${vetorConsulta[i]}</td><td>${vetorConsulta[i+1]}</td><td>${vetorConsulta[i+2]}</td><td>${vetorConsulta[i+3]}</td><td>${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
     aparece.innerHTML = elemento
     aparece.innerHTML += `<button id="bota" onclick="fecharBox()">X</button>`
 }
+
 function fecharBox(){
     aparece.innerHTML = ``
 }
@@ -188,6 +204,7 @@ const teste2 = async() =>{
     data2 = response2.data
     console.log(data2)
     if (data2 == true){
+        data2 = 'continue'
         result = window.document.querySelector("#result");
         resultCalendario = window.document.querySelector("#resultCalendario");
         aparece = window.document.querySelector("#aparece");
@@ -199,4 +216,4 @@ const teste2 = async() =>{
     }
 }
 
-setTimeout(teste2, 500)
+teste2()

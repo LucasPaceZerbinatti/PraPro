@@ -30,22 +30,35 @@ appJava.options('*', cors())
 appJava.get('/',(req, res) => {
   res.send(metodo+","+dados1+","+dados2)
 })
-appJava.post('/', function requestHandler(req, res) {
-  console.log(req.body.dados)
-  dados = req.body.dados
-  res.send("coisa boa")
-    app.get('/calendario/', (req, res) => {
+appJava.post('/', function requestHandler(request, response) {
+  console.log(request.body.dados)
+  dados = request.body.dados
+  response.send("coisa boa")
+
+ app.get('/calendario/', (req, res) => {
+    if (dados == null){
+      res.send('continue')
+    } else{
       console.log("calendario"+dados)
       res.send(dados)
-      })
+      dados = null
+    }
+
+    })
   app.get('/consultas/', (req, res) => {
-      console.log("consultas: "+dados)
+    if (dados == null){
+      res.send('continue')
+    } else{
+      console.log("calendario"+dados)
       res.send(dados)
+      dados = null
+    }
           })
   
-  app.get('/login/', (request, response) => {
+  app.get('/login/', (req, res) => {
       console.log("login2: "+dados)
-      response.send(dados)
+      res.send(dados)
+      dados = null
           })
         })
   
