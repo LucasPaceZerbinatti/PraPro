@@ -173,11 +173,15 @@ function dim2(){
         else{
             var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
-        elemento += `<tr><td>${vetorConsulta[i]}</td><td>${vetorConsulta[i+1]}</td><td>${vetorConsulta[i+2]}</td><td>${vetorConsulta[i+3]}</td><td>${checkbox}</td>`
+        elemento += `<tr><td>${vetorConsulta[i]}</td><td>${vetorConsulta[i+1]}</td><td>${vetorConsulta[i+2]}</td><td ondblclick="medicamentos('${vetorConsulta[i+3]}')">${vetorConsulta[i+3]}</td><td>${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
     aparece.innerHTML = elemento
     aparece.innerHTML += `<button id="bota" onclick="fecharBox()">X</button>`
+}
+
+function medicamentos(medicamento){
+    window.document.querySelector("#medicamentos").innerHTML = `<textarea cols="20" rows="30">${medicamento}</textarea>`
 }
 
 function estado(id){
