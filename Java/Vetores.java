@@ -1,3 +1,4 @@
+package Java;
 public class Vetores {
     public static Medico buscaMedico(int CRM){
         int inicio = 0;

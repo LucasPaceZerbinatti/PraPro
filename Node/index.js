@@ -7,7 +7,6 @@ const express = require('express')
 var cors = require('cors')
 const app = express()
 var bodyParser = require('body-parser');
-const { stringify } = require('querystring')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 var dados1
@@ -77,47 +76,5 @@ app.post('/', function requestHandler(req, res) {
   console.log(req.body.metodo)
   console.log(req.body.dados1)
 }
-)
-
-
-
-function enviarParaJava(mensagem){
-  console.log('escrevendo')
-  try{
-    var teste = net.createServer (function(sock) {  
-      teste.on('error', function(){
-        console.log('givas gay')
-      })
-      sock.write(mensagem)
-      console.log('escrito')
-      sock.end()
-      sock.on('data', function(data){
-          console.log(PORT)
-          dados = data.toString()
-          console.log(Buffer.from(data, 'utf-8').toString())
-          teste.close()          
-  app.get('/calendario/', (req, res) => {
-      console.log("calendario"+dados)
-      res.send(dados)
-      })
-  app.get('/consultas/', (req, res) => {
-      console.log("consultas: "+dados)
-      res.send(dados)
-          })
-  
-  app.get('/login/', (request, response) => {
-      console.log("login2: "+dados)
-      response.send(dados)
-          })
-        }
-  
-      )
-  } ) .listen(PORT, HOST) 
-  }
-
-  catch(error){
-    teste.close()
-  }
-
-} 
+) 
 

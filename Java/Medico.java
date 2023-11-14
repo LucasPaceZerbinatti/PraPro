@@ -1,3 +1,4 @@
+package Java;
 public class Medico {
 private int CRM;
 private String nomeMedico;

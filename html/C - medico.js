@@ -160,17 +160,18 @@ const pegaConsultas = async() =>{
 }
 function dim(dia){
     enviar({'metodo':'consultaCalendario','dados1':dia+","+mes,'dados2':ano})
+    data2 = 'continue'
     console.log(dia)
     pegaConsultas()
 }
 function dim2(){
     var elemento = `<table><tr><th>INICIO</th><th>PACIENTE</th><th>OBSERVAÇÕES</th><th>MEDICAMENTOS</th><th>CONCLUÍDO</th>`
-    for (i = 0; i<vetorConsulta.length-1; i+=5){
+    for (i = 0; i<vetorConsulta.length-1; i+=6){
         if (vetorConsulta[i+4] == 'finalizada'){
-            var checkbox = "<input type='checkbox' checked></input>"
+            var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' checked></input>"
         }
         else{
-            var checkbox = "<input type='checkbox'></input>"
+            var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
         elemento += `<tr><td>${vetorConsulta[i]}</td><td>${vetorConsulta[i+1]}</td><td>${vetorConsulta[i+2]}</td><td>${vetorConsulta[i+3]}</td><td>${checkbox}</td>`
     }
@@ -179,8 +180,18 @@ function dim2(){
     aparece.innerHTML += `<button id="bota" onclick="fecharBox()">X</button>`
 }
 
+function estado(id){
+    console.log(id)
+    if (window.document.querySelector("#check"+id).checked == true){
+        var num = 1
+    } else{
+        var num = 0
+    }
+    enviar({'metodo':'enviaEstado','dados1':id,'dados2':num})    
+}
 function fecharBox(){
     aparece.innerHTML = ``
+    enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
 }
 
 function today(){

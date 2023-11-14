@@ -1,3 +1,4 @@
+package Java;
 import java.sql.Date;
 
 public class Paciente {

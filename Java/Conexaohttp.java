@@ -1,3 +1,4 @@
+package Java;
 import java.net.URL;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -55,7 +56,6 @@ public void post(String mensagem) throws IOException{
         while ((responseLine = br.readLine()) != null) {
         response.append(responseLine.trim());
     }
-    System.out.println(response.toString());
 }
     } catch (Exception e) {
         System.out.println(e.getMessage());

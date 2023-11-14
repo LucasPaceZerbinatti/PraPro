@@ -1,3 +1,4 @@
+package Java;
 import java.sql.Timestamp;
 
 public class Consulta {

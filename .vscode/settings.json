@@ -6,6 +6,12 @@
         "mssql-jdbc-12.4.0.jre8-sources.jar",
         "mssql-jdbc-12.4.0.jre11.jar",
         "mssql-jdbc-12.4.0.jre11-javadoc.jar",
-        "mssql-jdbc-12.4.0.jre11-sources.jar"
+        "mssql-jdbc-12.4.0.jre11-sources.jar",
+        "Java/mssql-jdbc-12.4.0.jre8.jar",
+        "Java/mssql-jdbc-12.4.0.jre8-javadoc.jar",
+        "Java/mssql-jdbc-12.4.0.jre8-sources.jar",
+        "Java/mssql-jdbc-12.4.0.jre11.jar",
+        "Java/mssql-jdbc-12.4.0.jre11-javadoc.jar",
+        "Java/mssql-jdbc-12.4.0.jre11-sources.jar"
     ]
 }

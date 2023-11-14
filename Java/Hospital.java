@@ -1,3 +1,4 @@
+package Java;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.*;
@@ -16,7 +17,7 @@ public class Hospital {
     public static int CRM;
     public static Conexaohttp conexaohttp;
     public static void main(String[] args) throws IOException{
-      String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
+        String url = "jdbc:sqlserver://;servername=regulus.cotuca.unicamp.br;encrypt=false;integratedSecurity=false;authenticationScheme=JavaKerberos";
         try {
             System.setProperty("java.net.preferIPv6Addresses", "true");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -48,18 +49,18 @@ public class Hospital {
                     switch (dados[0]) {
                         case "logar":
                             logar();
-                            System.out.println("deu certo");
                             conexaohttp.post(mensagem);
                             break;
                         case "calendario":
                             calendario();
-                            System.out.println("deu certo");
                             conexaohttp.post(mensagem);
                             break;
                         case "consultaCalendario":
                             consultaCalendario();
-                            System.out.println("deu certo");
                             conexaohttp.post(mensagem);
+                            break;
+                        case "enviaEstado":
+                            enviaEstado();
                             break;
                         default:
                             break;
@@ -85,7 +86,7 @@ public class Hospital {
         String texto;
         mes+=1;
         try {
-            PreparedStatement stmtConsultas = con.prepareStatement("select q.horaInicio, q.horaFim, p.nome, q.observacoes, q.medicamentos, q.concluido from "+
+            PreparedStatement stmtConsultas = con.prepareStatement("select q.horaInicio, q.horaFim, p.nome, q.observacoes, q.medicamentos, q.concluido, q.idConsulta from "+
             "Hospital.Query q, "+
             "Hospital.Patient p "+
             "where q.idPaciente = p.idPaciente and q.CRM = "+CRM+" and day(q.horaInicio) = "+dia+" and month(q.horaInicio) = "+mes+" and year(q.horaInicio) = "+ano+" order by horaInicio");
@@ -97,7 +98,7 @@ public class Hospital {
                 else {
                     texto = "pendente";
                 }
-                mensagem += resultadoConsultas.getTime("horaInicio")+","+resultadoConsultas.getString("nome")+","+resultadoConsultas.getString("observacoes")+","+resultadoConsultas.getString("medicamentos")+","+texto+",";
+                mensagem += resultadoConsultas.getTime("horaInicio")+","+resultadoConsultas.getString("nome")+","+resultadoConsultas.getString("observacoes")+","+resultadoConsultas.getString("medicamentos")+","+texto+","+resultadoConsultas.getInt("idConsulta")+",";
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -143,6 +144,16 @@ public class Hospital {
 
 
         }
+    
+    public static void enviaEstado(){
+        try {
+            PreparedStatement stmtEstado = con.prepareStatement("update Hospital.query set concluido = "+dados[2]+" where idConsulta = "+dados[1]);
+            stmtEstado.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
     public static void adiconaMedicos(){
         try {
