@@ -2,8 +2,10 @@
     let result = window.document.querySelector("#result");
     let resultCalendario = window.document.querySelector("#resultCalendario");
     let aparece = window.document.querySelector("#aparece");
+    var listaMedicamentos = window.document.querySelector("#medicamentos")
     var vetorData
     var i
+    var medLista
     var vetorConsulta
 
     const data = new Date()
@@ -105,7 +107,7 @@ const pegaCalendario = async() =>{
         data2 = response2.data
     }
     console.log(data2)
-    vetorData = data2.split('✎')
+    vetorData = data2.split(';,')
     data2 = 'continue'
     console.log(vetorData)
     calendario2()
@@ -152,14 +154,14 @@ const pegaConsultas = async() =>{
         data2 = response2.data
     }
     
-    vetorConsulta = data2.split("✎")
+    vetorConsulta = data2.split(";,")
     data2 = 'continue'
     console.log(vetorConsulta)
     dim2()
 
 }
 function dim(dia){
-    enviar({'metodo':'consultaCalendario','dados1':dia+"✎"+mes,'dados2':ano})
+    enviar({'metodo':'consultaCalendario','dados1':dia+";,"+mes,'dados2':ano})
     data2 = 'continue'
     console.log(dia)
     pegaConsultas()
@@ -181,12 +183,59 @@ function dim2(){
 }
 
 function medicamentos(medicamento){
-    var medLista = medicamento.split('|')
     var listaMedicamentos = window.document.querySelector("#medicamentos")
-    listaMedicamentos.innerHTML = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS</th></tr>`
+    medLista = medicamento.split('|')
+    var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
     for (let index = 0; index < medLista.length; index++) {
-        listaMedicamentos.innerHTML += `<tr id="trMed"><th id="thMed">${medLista[index]}</th></tr>`
+        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
 }
+    listaMedicamentos.innerHTML = elemento
+}
+
+function addMed(){
+    console.log("addmed")
+    var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
+    var listaMedicamentos = window.document.querySelector("#medicamentos")
+    for (let index = 0; index < medLista.length; index++) {
+        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
+}
+    elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length}" type='text'</input><button onclick="subMed(${medLista.length})">-</button></th></tr>`
+    listaMedicamentos.innerHTML = elemento
+    console.log(medLista)
+    medLista.push('')
+    
+}
+function subMed(id){
+    console.log(id)
+    var num = -1
+    var listaMedicamentos = window.document.querySelector("#medicamentos")
+    var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
+    listaMedicamentos.innerHTML = ""
+    for (let index = 0; index < medLista.length; index++) {
+        num += 1
+        if (index == id){
+            num -=1
+        } else{
+            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${num}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${num})">-</button></th></tr>`
+
+}
+    }
+    listaMedicamentos.innerHTML = elemento
+    medLista.splice(id, 1)
+    console.log(medLista)
+}
+
+function fecharMed(){
+    var totalMedicamentos = ""
+    for (let index = 0; index < medLista.length; index++){
+        var medicamento = window.document.querySelector("#inp"+index).value
+        totalMedicamentos += medicamento+"|"
+    }
+    totalMedicamentos = totalMedicamentos.substring(0,totalMedicamentos.length - 1)
+    console.log(totalMedicamentos)
+    var listaMedicamentos = window.document.querySelector("#medicamentos")
+    listaMedicamentos.innerHTML = ""
+
 }
 
 function estado(id){
