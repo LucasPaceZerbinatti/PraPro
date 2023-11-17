@@ -27,7 +27,7 @@ appJava.use(cors())
 appJava.options('*', cors())
 
 appJava.get('/',(req, res) => {
-  res.send(metodo+","+dados1+","+dados2)
+  res.send(metodo+"✎"+dados1+"✎"+dados2)
 })
 appJava.post('/', function requestHandler(request, response) {
   console.log(request.body.dados)

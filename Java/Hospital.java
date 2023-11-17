@@ -42,7 +42,7 @@ public class Hospital {
                 conexaohttp = new Conexaohttp();
                 conexaohttp.get();
                 String dado = conexaohttp.getData();
-                dados = dado.split(",");
+                dados = dado.split("✎");
                 if (Arrays.equals(aux, dados) == false){
                     aux = dados;
                     System.out.println(dados.toString());
@@ -98,7 +98,7 @@ public class Hospital {
                 else {
                     texto = "pendente";
                 }
-                mensagem += resultadoConsultas.getTime("horaInicio")+","+resultadoConsultas.getString("nome")+","+resultadoConsultas.getString("observacoes")+","+resultadoConsultas.getString("medicamentos")+","+texto+","+resultadoConsultas.getInt("idConsulta")+",";
+                mensagem += resultadoConsultas.getTime("horaInicio")+"✎"+resultadoConsultas.getString("nome")+"✎"+resultadoConsultas.getString("observacoes")+"✎"+resultadoConsultas.getString("medicamentos")+"✎"+texto+"✎"+resultadoConsultas.getInt("idConsulta")+"✎";
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -135,7 +135,7 @@ public class Hospital {
                 ResultSet resultadoData = stmtData.executeQuery();
                 while (resultadoData.next()){
                     System.out.println(resultadoData.getInt("quantos"));
-                    mensagem += resultadoData.getInt("quantos") + ",";
+                    mensagem += resultadoData.getInt("quantos") + "✎";
                 }
             }
         } catch (Exception e) {
@@ -164,14 +164,14 @@ public class Hospital {
                 ResultSet resultadoSenha = stmtSenha.executeQuery();
                 resultadoSenha.next();
                 Medico medico = new Medico(resultado.getInt("CRM"), resultado.getString("nome"), resultado.getString("sobrenome"), resultado.getString("email"), resultado.getString("telefone"), resultado.getFloat("salario"), resultadoSenha.getString("senha"));
-                PreparedStatement stmtEspec = con.prepareStatement("select s.nome from "+
+                PreparedStatement stmtEspec = con.prepareStatement("select s.nomeEspec from "+
                 "Hospital.DoctorSpecialization ds, "+
                 "Hospital.Specialization s "+
                 "where ds.CRM = "+resultado.getInt("CRM")+" and ds.idEspecializacao = s.idEspecializacao");
                 ResultSet resultadoEspec = stmtEspec.executeQuery();
 
                 while (resultadoEspec.next()) {
-                    String espec = resultadoEspec.getString("nome");
+                    String espec = resultadoEspec.getString("nomeEspec");
                     medico.addEspec(espec);
                 }
                 medicos[qtsMedicos] = medico;

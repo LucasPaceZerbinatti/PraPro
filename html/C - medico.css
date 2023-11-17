@@ -9,12 +9,14 @@ body {
 h1{
     font-size: 25px;
 }
-table, th, tr, td {
+#tConsulta, #thConsulta, #trConsulta, #tdConsulta {
     border: black; border-style: ridge; border-collapse: collapse; font-family:'Trebuchet MS'; width: 600px; background-color:lightgray; z-index: 6; 
 }   
-table{
+#tConsulta{
     position: absolute; left: 31.3%; top: 5%;
 }
+
+#tMed, #thMed, #trMed
 
 
 #bota{
