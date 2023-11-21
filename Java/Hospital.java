@@ -1,9 +1,9 @@
 package Java;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.sql.*;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 public class Hospital {
     public static Atendente[] atendentes = new Atendente[500];
@@ -64,6 +64,10 @@ public class Hospital {
                             break;
                         case "enviaEstado":
                             enviaEstado();
+                            break;
+                        case "addMedicamento":
+                            addMedicamento();
+                            conexaohttp.post(mensagem);
                             break;
                         default:
                             break;
@@ -165,6 +169,16 @@ public class Hospital {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public static void addMedicamento(){
+        try {
+            PreparedStatement stmtMedicamento = con.prepareStatement("update Hospital.Query set medicamentos = "+dados[2]+" where idConsulta = "+dados[1]);
+            stmtMedicamento.executeQuery();
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void adiconaMedicos() {

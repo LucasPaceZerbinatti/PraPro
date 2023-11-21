@@ -7,7 +7,7 @@
     var i
     var medLista
     var vetorConsulta
-
+    var idConsulta
     const data = new Date()
 
     const dia = data.getDate()
@@ -175,14 +175,15 @@ function dim2(){
         else{
             var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
-        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" ondblclick="medicamentos('${vetorConsulta[i+3]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
+        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" ondblclick="medicamentos('${vetorConsulta[i+3], vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
     aparece.innerHTML = elemento
     aparece.innerHTML += `<button id="bota" onclick="fecharBox()">X</button>`
 }
 
-function medicamentos(medicamento){
+function medicamentos(medicamento, id){
+    idConsulta = id
     var listaMedicamentos = window.document.querySelector("#medicamentos")
     medLista = medicamento.split('|')
     var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
@@ -229,11 +230,15 @@ function fecharMed(){
     var totalMedicamentos = ""
     for (let index = 0; index < medLista.length; index++){
         var medicamento = window.document.querySelector("#inp"+index).value
-        totalMedicamentos += medicamento+"|"
+        if (medicamento != ''){
+            totalMedicamentos += medicamento+"|"
+        }
+        
     }
     totalMedicamentos = totalMedicamentos.substring(0,totalMedicamentos.length - 1)
     console.log(totalMedicamentos)
     var listaMedicamentos = window.document.querySelector("#medicamentos")
+    enviar({"metodo":"addMedicamento","dados1":idConsulta, "dados2":totalMedicamentos})
     listaMedicamentos.innerHTML = ""
 
 }
