@@ -8,6 +8,7 @@
     var medLista
     var vetorConsulta
     var idConsulta
+    var diaSelecionado
     const data = new Date()
 
     const dia = data.getDate()
@@ -162,6 +163,7 @@ const pegaConsultas = async() =>{
 }
 function dim(dia){
     enviar({'metodo':'consultaCalendario','dados1':dia+";,"+mes,'dados2':ano})
+    diaSelecionado = dia
     data2 = 'continue'
     console.log(dia)
     pegaConsultas()
@@ -175,7 +177,7 @@ function dim2(){
         else{
             var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
-        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" ondblclick="medicamentos('${vetorConsulta[i+3], vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
+        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" ondblclick="medicamentos('${vetorConsulta[i+3]}', '${vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
     aparece.innerHTML = elemento
@@ -184,6 +186,8 @@ function dim2(){
 
 function medicamentos(medicamento, id){
     idConsulta = id
+    console.log(medicamento)
+    console.log(id)
     var listaMedicamentos = window.document.querySelector("#medicamentos")
     medLista = medicamento.split('|')
     var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
@@ -194,34 +198,42 @@ function medicamentos(medicamento, id){
 }
 
 function addMed(){
-    console.log("addmed")
-    var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
-    var listaMedicamentos = window.document.querySelector("#medicamentos")
-    for (let index = 0; index < medLista.length; index++) {
-        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
-}
-    elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length}" type='text'</input><button onclick="subMed(${medLista.length})">-</button></th></tr>`
-    listaMedicamentos.innerHTML = elemento
-    console.log(medLista)
-    medLista.push('')
-    
+        var medicamento = [];
+        var achou = false;
+        console.log(medicamento)
+        var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
+        var listaMedicamentos = window.document.querySelector("#medicamentos")
+        for (let index = 0; index < medLista.length; index++) {
+            medicamento.push(window.document.querySelector("#inp"+index).value)
+            if (medicamento[index] == ''){
+                achou = true
+            }
+            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medicamento[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
+    }
+    if (achou == false){
+        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length}" type='text'</input><button onclick="subMed(${medLista.length})">-</button></th></tr>`
+        listaMedicamentos.innerHTML = elemento
+        console.log(medLista)
+        medLista.push('')   
+    }
+ 
 }
 function subMed(id){
+    var medicamento = []
     console.log(id)
     var num = -1
     var listaMedicamentos = window.document.querySelector("#medicamentos")
     var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
-    listaMedicamentos.innerHTML = ""
     for (let index = 0; index < medLista.length; index++) {
-        num += 1
-        if (index == id){
-            num -=1
-        } else{
-            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${num}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${num})">-</button></th></tr>`
+        medicamento.push(window.document.querySelector("#inp"+index).value)
 
 }
+    medicamento.splice(id, 1)
+    for(let index = 0; index < medicamento.length; index++){
+        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medicamento[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
     }
     listaMedicamentos.innerHTML = elemento
+    console.log(medicamento)
     medLista.splice(id, 1)
     console.log(medLista)
 }
@@ -238,7 +250,13 @@ function fecharMed(){
     totalMedicamentos = totalMedicamentos.substring(0,totalMedicamentos.length - 1)
     console.log(totalMedicamentos)
     var listaMedicamentos = window.document.querySelector("#medicamentos")
-    enviar({"metodo":"addMedicamento","dados1":idConsulta, "dados2":totalMedicamentos})
+    if (totalMedicamentos != ""){
+        enviar({"metodo":"addMedicamento","dados1":idConsulta, "dados2":totalMedicamentos})
+    }
+    else {
+        enviar({"metodo":"addMedicamento","dados1":idConsulta, "dados2":' '})
+    }
+    
     listaMedicamentos.innerHTML = ""
 
 }

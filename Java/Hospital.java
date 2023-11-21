@@ -48,7 +48,7 @@ public class Hospital {
                 dados = dado.split(";,");
                 if (Arrays.equals(aux, dados) == false) {
                     aux = dados;
-                    System.out.println(dados.toString());
+                    System.out.println(Arrays.toString(dados));
                     switch (dados[0]) {
                         case "logar":
                             logar();
@@ -67,7 +67,6 @@ public class Hospital {
                             break;
                         case "addMedicamento":
                             addMedicamento();
-                            conexaohttp.post(mensagem);
                             break;
                         default:
                             break;
@@ -171,12 +170,14 @@ public class Hospital {
 
     }
 
-    public static void addMedicamento(){
+    public static void addMedicamento() {
+        System.out.println(dados[2]);
         try {
-            PreparedStatement stmtMedicamento = con.prepareStatement("update Hospital.Query set medicamentos = "+dados[2]+" where idConsulta = "+dados[1]);
+            PreparedStatement stmtMedicamento = con.prepareStatement(
+                    "update Hospital.query set medicamentos = '" + dados[2] + "' where idConsulta = '" + dados[1]
+                            + "'");
             stmtMedicamento.executeQuery();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
