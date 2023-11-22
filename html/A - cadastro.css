@@ -52,10 +52,10 @@ body{
 .input{
     width: 300px;
 }
-#cadas{
+#cadastro{
     color: black;
 }
-#cadas:hover{
+#cadastro:hover{
     color: gray;
     font-size: 20px;
 }
