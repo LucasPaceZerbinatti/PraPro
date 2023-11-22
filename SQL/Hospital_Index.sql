@@ -1,29 +1,28 @@
 /* INDEX PARA ORDENAR AS ESPECIALIZAÇÕES PELO NOME */
-create index ixEsp
+CREATE INDEX ixEsp
 on Hospital.Specialization(nomeEspecializacao);
 
 /* TABELA PARA ORDENAR AS ESPECIALIZAÇÕES DOS MÉDICOS POR ESPECIALIZAÇÃO */
-create CLUSTERED index ixEspDoc
+CREATE CLUSTERED INDEX ixEspDoc
 on Hospital.DoctorSpecialization(idEspecializacao)
 
 /* INDEX PARA ORDENAR OS LOGINS DE MÉDICO PELO CRM */
-create CLUSTERED index ixUserDoc
+CREATE CLUSTERED INDEX ixUserDoc
 on Hospital.UsernameDoctor(CRM);
 
 /* INDEX PARA ORDENAR OS LOGINS DE ATENDENTES PELO ID */
-create CLUSTERED index ixUserAte
+CREATE CLUSTERED INDEX ixUserAte
 on Hospital.UsernameAttendant(idAtendente);
 
 /* INDEX PARA ORDENAR AS CONSULTAS PELO ID DO PACIENTE */
-create CLUSTERED index ixQuery
+CREATE CLUSTERED INDEX ixQuery
 on Hospital.Query(idPaciente, CRM);
 
 /* COMANDOS DE CONTROLE DE INDEX */
-drop index ixEsp on Hospital.Specialization
-drop index ixEspDoc on Hospital.DoctorSpecialization
-drop index ixUserDoc on Hospital.UsernameDoctor
-drop index ixUserAte on Hospital.UsernameAttendant
-drop index ixUserDoc on Hospital.UsernameDoctor
-
+DROP INDEX ixEsp on Hospital.Specialization
+DROP INDEX ixEspDoc on Hospital.DoctorSpecialization
+DROP INDEX ixUserDoc on Hospital.UsernameDoctor
+DROP INDEX ixUserAte on Hospital.UsernameAttendant
+DROP INDEX ixUserDoc on Hospital.UsernameDoctor
 
 -- alter table 'nomeDaTabela' drop constraint 'nomeDoIndexPK'
