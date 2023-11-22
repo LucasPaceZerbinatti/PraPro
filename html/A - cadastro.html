@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <link rel="icon" href="logoHospital.png">
+    <title>Cadastro</title>
+
+    <link rel="stylesheet" href="A - cadastro.css">
+    <script src="A - cadastro.js"></script>
+</head>
+
+<body>
+    <div id="login">
+        <div id="menu">
+            <img src="icone.png" id="imgHopt">
+        </div>
+        
+        <div id="areaLogin">
+            <form>
+                <input type="radio" name="opcao" onchange="mudarPagina()" id="medico" class="opcoes"> Médico
+                <input type="radio" name="opcao" onchange="mudarPagina()" id="cliente" class="opcoes"> Paciente
+                <input type="radio" name="opcao" onchange="mudarPagina()" id="atendente" class="opcoes"> Atendente
+
+            <div id="result"></div>
+
+            <p id="texto">Clique em Cadastrar para criar a conta!!</p>
+            <br>
+            <div style="text-align: center;">
+                <a href="B - login.html" id="cadas">Retornar para área de login</a>
+            </div>
+        </div>
+            
+            <br>
+                <button id="botao" onclick="cadastrar()">Cadastrar</button>
+            </form>
+    </div>
+</body>
+</html>
