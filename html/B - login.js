@@ -11,7 +11,7 @@ function mudarPagina(){
     if (opcoesDeCadastro[0].checked){        
         result.replaceChildren()
         const medicoEmail     = document.createElement("p");
-        medicoEmail.innerHTML = "E-Mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
+        medicoEmail.innerHTML = "CRM: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
         
         const medicoSenha     = document.createElement("p");
         medicoSenha.innerHTML = "Senha:"     + "<br>" + "<input type='text' class='input' id='senha'>";
@@ -24,7 +24,7 @@ function mudarPagina(){
     else if (opcoesDeCadastro[1].checked){
         result.replaceChildren()
         const atendenteEmail     = document.createElement("p");
-        atendenteEmail.innerHTML = "E-Mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
+        atendenteEmail.innerHTML = "E-mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
 
         const atendenteSenha     = document.createElement("p");
         atendenteSenha.innerHTML = "Senha:"     + "<br>" + "<input type='text' class='input' id='senha'>";
