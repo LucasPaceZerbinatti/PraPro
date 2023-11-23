@@ -90,14 +90,8 @@ public class Hospital {
         String texto;
         mes += 1;
         try {
-            PreparedStatement stmtConsultas = con.prepareStatement(
-                    "select q.horaInicio, q.horaFim, p.nome, q.observacoes, q.medicamentos, q.concluido, q.idConsulta from "
-                            +
-                            "Hospital.Query q, " +
-                            "Hospital.Patient p " +
-                            "where q.idPaciente = p.idPaciente and q.CRM = " + CRM + " and day(q.horaInicio) = " + dia
-                            + " and month(q.horaInicio) = " + mes + " and year(q.horaInicio) = " + ano
-                            + " order by horaInicio");
+            PreparedStatement stmtConsultas = con
+                    .prepareStatement("Exec GET_ConsultasJAVA " + CRM + ", " + dia + ", " + mes + ", " + ano);
             ResultSet resultadoConsultas = stmtConsultas.executeQuery();
             while (resultadoConsultas.next()) {
                 if (resultadoConsultas.getInt("concluido") == 1) {
