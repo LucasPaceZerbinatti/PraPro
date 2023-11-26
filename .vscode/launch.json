@@ -9,6 +9,13 @@
             "name": "Hospital",
             "request": "launch",
             "mainClass": "Java.Hospital",
+            "projectName": "PraPro_e8238df3"
+        },
+        {
+            "type": "java",
+            "name": "Hospital",
+            "request": "launch",
+            "mainClass": "Java.Hospital",
             "projectName": "PraPro_7135000f"
         },
         {

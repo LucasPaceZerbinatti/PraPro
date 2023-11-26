@@ -10,13 +10,13 @@
     var idConsulta
     var diaSelecionado
     const data = new Date()
-
+    var data2
     const dia = data.getDate()
     const mesFixo = data.getMonth()
     let mes = data.getMonth()
     let ano = data.getFullYear()
     var mesEscrito
-    diasMes = 1
+    var diasMes
 
 
 
@@ -24,6 +24,7 @@
     
 
 function calendario() { 
+    console.log("calendario")
     switch (mes) {
         case 0:
             mesEscrito = "Janeiro"
@@ -85,6 +86,7 @@ function calendario() {
 }
 
 function calendario2(){
+    diasMes = 1
     i = 0
     while (diasMes <= qntsMes) {
         var texto = ""
@@ -96,7 +98,7 @@ function calendario2(){
             for (indice = 0; indice<numero; indice++){
                 texto += "."
             }
-            resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p>`
+            resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias"  onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p></div></div>`
         }
         i += 1
         diasMes += 1
@@ -154,7 +156,7 @@ const pegaConsultas = async() =>{
         const response2 = await axios.get('http://localhost:8080/calendario/')
         data2 = response2.data
     }
-    
+    console.log("saiu")
     vetorConsulta = data2.split(";,")
     data2 = 'continue'
     console.log(vetorConsulta)
@@ -162,8 +164,10 @@ const pegaConsultas = async() =>{
 
 }
 function dim(dia){
-    enviar({'metodo':'consultaCalendario','dados1':dia+";,"+mes,'dados2':ano})
     diaSelecionado = dia
+    fecharBox()
+    window.document.querySelector(`#calendario${dia}`).removeAttribute("onclick")
+    enviar({'metodo':'consultaCalendario','dados1':dia+";,"+mes,'dados2':ano})
     data2 = 'continue'
     console.log(dia)
     pegaConsultas()
@@ -177,7 +181,7 @@ function dim2(){
         else{
             var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
-        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" ondblclick="medicamentos('${vetorConsulta[i+3]}', '${vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
+        elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" class="tdMed${vetorConsulta[i+5]}" ondblclick="medicamentos('${vetorConsulta[i+3]}', '${vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
     aparece.innerHTML = elemento
@@ -258,6 +262,9 @@ function fecharMed(){
     }
     
     listaMedicamentos.innerHTML = ""
+    window.document.querySelector(".tdMed"+idConsulta).innerHTML = totalMedicamentos;
+    dim(diaSelecionado)
+
 
 }
 
@@ -271,7 +278,9 @@ function estado(id){
     enviar({'metodo':'enviaEstado','dados1':id,'dados2':num})    
 }
 function fecharBox(){
+    resultCalendario.innerHTML = ""
     aparece.innerHTML = ``
+    calendario2()
     enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
 }
 
