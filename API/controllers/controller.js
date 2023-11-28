@@ -6,13 +6,9 @@ exports.getRaiz = ("/",(req,res) => {
     res.send('<h1>Node com SQLServer</h1>');
 })
 
+///////////////////////////////////////////////////////////// GET /////////////////////////////////////////////////////////////
 exports.getMedicos = ("/getMedicos", async(req, res) => {
     const result = await prisma.$queryRaw`SELECT * FROM V_Doctor`;
-    res.json(result);
-})
-
-exports.getPacientes = ("/getPacientes", async(req, res) => {
-    const result = await prisma.$queryRaw`SELECT * FROM Hospital.Patient`;
     res.json(result);
 })
 
@@ -21,84 +17,33 @@ exports.getAtendentes = ("/getAtendentes", async(req, res) => {
     res.json(result);
 })
 
-exports.getConsultas = ("/getConsultas", async(req, res) => {
-    const result = await prisma.$queryRaw`SELECT * FROM V_QueryDatas`;
-    res.json(result);
-})
-
-exports.getEspecializacao = ("/getEspecializacao", async(req, res) => {
-    const result = await prisma.$queryRaw`SELECT * FROM V_DoctorSpec`;
-    res.json(result);
-})
-
-exports.getMedicoPendente = ("/getMedicoPendente", async(req, res) => {
-    const CRM = Number(req.query.CRM);
-    const result = await prisma.$queryRaw`EXEC pMedExibirPen ${CRM}`;
-    res.json(result)
-})
-
-exports.getMedicoConcluido = ("/getMedicoConcluido", async(req, res) => {
-    const CRM = Number(req.query.CRM);
-    const result = await prisma.$queryRaw`EXEC pMedExibirCon ${CRM}`;
-    res.json(result);
-})
-
-exports.getPacientePendente = ("/getPacientePendente", async(req, res) => {
-    const CPF = String(req.query.CPF);
-    const result = await prisma.$queryRaw`EXEC pPacExibirPen ${CPF}`;
-    res.json(result);
-})
-
-exports.getPacienteConcluido = ("/getPacienteConcluido", async(req, res) => {
-    const CPF = String(req.query.CPF);
-    const result = await prisma.$queryRaw`EXEC pPacExibirCon ${CPF}`;
-    res.json(result);
-})
-
-exports.getPacienteCincoUltimas = ("/getPacienteCincoUltimas", async(req, res) => {
-    const CPF = String(req.query.CPF);
-    const result = await prisma.$queryRaw`EXEC pPac5Con ${CPF}`;
-    res.json(result);
-})
-
 ///////////////////////////////////////////////////////////// POST /////////////////////////////////////////////////////////////
-exports.postEspecializacao = async (req, res) => {
-    const nome = req.body.nome;
-    try {
-      const result = await prisma.$queryRaw`EXEC pInsertSpec ${nome}`;
-      console.log('Inserção bem-sucedida!');
-      res.status(200).json({ message: 'Inserção bem-sucedida!' });
-    } 
-    
-    catch (error) {
-      console.error('Erro ao inserir a especialização:', error);
-      res.status(500).json({ error: 'Erro ao inserir a especialização.' });
-    }
-  };
-  
-///////////////////////// FOI /////////////////////////
-exports.postMedico = async(req, res) => {
-    const CRM       = req.body.CRM;
-    const nome      = req.body.nome;
-    const sobrenome = req.body.sobrenome;
-    const telefone  = req.body.telefone;
-    const email     = req.body.email;
-    const senha     = req.body.senha;
-    const espec     = req.body.espec;
+/* INSERE UM MÉDICO NO BD */
+exports.postMedico = ("/postMedico", async(req, res) => {
+    const CRM       = parseInt(req.body.CRM);
+    const nome      = String(req.body.nome);
+    const sobrenome = String(req.body.sobrenome);
+    const telefone  = String(req.body.telefone);
+    const email     = String(req.body.email);
+    const senha     = String(req.body.senha);
+    const nomeEspec = String(req.body.espec);
 
     try{
-        const result1 = await prisma.$queryRaw`EXEC POST_Espec @espec = ${espec}`;
+        const result1 = await prisma.$queryRaw`EXEC POST_Espec ${nomeEspec}`;
         const result2 = await prisma.$queryRaw`EXEC POST_Medico ${CRM}, ${nome}, ${sobrenome}, ${email}, ${telefone}`;
         const result3 = await prisma.$queryRaw`EXEC POST_UserMed ${CRM}, ${senha}`;
-        const result4 = await prisma.$queryRaw`EXEC POST_EspecMed ${CRM}, ${espec}`;
+        const result4 = await prisma.$queryRaw`EXEC POST_EspecMed ${CRM}, ${nomeEspec}`;
+        const result5 = await prisma.$queryRaw`
+        CLOSE C_Espec;
+        DEALLOCATE C_Espec;`;
     }
 
     catch (error){
         console.error('Não foi possível inserir o(a) médico(a)!', error);
     }
-};
+});
 
-///////////////////////// FOI /////////////////////////
+/* INSERE UM ATENDENTE NO BD */
 exports.postAtendente = ("/postAtendente", async(req, res) => {
     const CPF       = req.body.CPF;
     const nome      = req.body.nome;
@@ -117,7 +62,7 @@ exports.postAtendente = ("/postAtendente", async(req, res) => {
     }
 })
 
-///////////////////////// FOI /////////////////////////
+/* INSERE UM PACIENTE NO BD */
 exports.postPaciente = ("/postPaciente", async(req, res) => {
     const CPF       = req.body.CPF;
     const nome      = req.body.nome;
@@ -136,7 +81,7 @@ exports.postPaciente = ("/postPaciente", async(req, res) => {
     }
 })
 
-///////////////////////// FOI /////////////////////////
+/* INSERE UMA CONSULTA NO BD */
 exports.postConsulta = ("/postConsulta", async(req, res) => {
     const horaInicio = req.body.horaInicio;
     const CRM        = req.body.CRM;
@@ -152,8 +97,9 @@ exports.postConsulta = ("/postConsulta", async(req, res) => {
 })
 
 ///////////////////////////////////////////////////////////// PUT /////////////////////////////////////////////////////////////
+/* ATUALIZA A SENHA DO MÉDICO */
 exports.putMedicoSenha = ("/putMedicoSenha", async(req, res) => {
-    const CRM   = req.body.CRM;
+    const CRM   = Number(req.body.CRM);
     const senha = req.body.senha;
 
     try{
@@ -165,6 +111,7 @@ exports.putMedicoSenha = ("/putMedicoSenha", async(req, res) => {
     }
 })
 
+/* ATUALIZA A SENHA DO ATENDENTE */
 exports.putAtendenteSenha = ("/putAtendentesSenha", async(req, res) => {
     const email   = req.body.email;
     const senha = req.body.senha;
@@ -178,9 +125,10 @@ exports.putAtendenteSenha = ("/putAtendentesSenha", async(req, res) => {
     }
 })
 
+/* ATUALIZA O SALÁRIO DO MÉDICO */
 exports.putMedicoSalario = ("/putMedicoSalario", async(req, res) => {
-    const CRM     = req.body.CRM;
-    const salario = req.body.salario;
+    const CRM     = Number(req.body.CRM);
+    const salario = parseFloat(req.body.salario);
 
     try{
         const result = await prisma.$queryRaw`EXEC UPDATE_MedSal ${CRM}, ${salario}`;
@@ -191,9 +139,10 @@ exports.putMedicoSalario = ("/putMedicoSalario", async(req, res) => {
     }
 })
 
+/* ATUALIZA O SALÁRIO DO ATENDENTE */
 exports.putAtendenteSalario = ("/putAtendenteSalario", async(req, res) => {
     const CPF     = req.body.CPF;
-    const salario = req.body.salario;
+    const salario = parseFloat(req.body.salario);
 
     try{
         const result = await prisma.$queryRaw`EXEC UPDATE_AteSal ${CPF}, ${salario}`;
@@ -206,26 +155,32 @@ exports.putAtendenteSalario = ("/putAtendenteSalario", async(req, res) => {
 
 
 ///////////////////////////////////////////////////////////// DELETE /////////////////////////////////////////////////////////////
-exports.deleteMedicosDemitido = ("/deleteMedicosDemitido", async(req, res) => {
-    const CRM = req.body.CRM;
+/* DELETA UM MÉDICO E SEUS DADOS */
+exports.deleteMedicosDemitido = ("/deleteMedicosDemitido", async (req, res) => {
+    let CRM = parseInt(req.query.CRM);
+
+    try {
+        const result = await prisma.$queryRaw`EXEC DELETE_MedDemitido ${CRM}`;
+        res.json(result);
+    }
     
-    try{
-         const result = await prisma.$queryRaw`EXEC DELETE_MedDemitido ${CRM}`;
+    catch (error) {
+        console.error('Erro ao demitir o(a) médico(a):', error);
+        res.status(500).json({ error: 'Erro interno ao demitir o(a) médico(a)' });
     }
+});
 
-    catch (error){
-        console.log('Não foi possível demitir o(a) médico(a)!');
-    }
-})
-
+/* DELETA UM ATENDENTE E SEUS DADOS */
 exports.deleteAtendenteDemitido = ("/deleteAtendenteDemitido", async(req, res) => {
-    const CPF = req.body.CPF;
+    const CPF = String(req.query.CPF);
     
     try{
          const result = await prisma.$queryRaw`EXEC DELETE_AteDemitido ${CPF}`;
+         res.json(result);
     }
 
     catch (error){
-        console.log('Não foi possível demitir o(a) atendente!');
+        console.error('Erro ao demitir o(a) atendente:', error);
+        res.status(500).json({ error: 'Erro interno ao demitir o(a) atendente' });
     }
 })

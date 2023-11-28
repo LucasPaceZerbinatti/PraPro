@@ -27,10 +27,12 @@ DELETE Hospital.UsernameDoctor
 DELETE Hospital.UsernameAttendant
 
 SELECT * FROM Hospital.Patient
-SELECT * FROM Hospital.Query
 SELECT * FROM Hospital.Specialization
 SELECT * FROM Hospital.DoctorSpecialization
 SELECT * FROM Hospital.Doctor
 SELECT * FROM Hospital.UsernameDoctor
 SELECT * FROM Hospital.Attendant
 SELECT * FROM Hospital.UsernameAttendant
+SELECT * FROM Hospital.Query
+
+UPDATE Hospital.Query set horaInicio = '27/11/2023'
