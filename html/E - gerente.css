@@ -1,0 +1,65 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#searchBox-Itens {
+    letter-spacing: 1.2px;
+}
+
+#imgHopt{
+    width: 80px;
+    height: 80px;
+
+}
+#searchBox{
+    align-items: center;
+    padding-top: 10px;
+    border: black solid 1.3px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px;
+    line-height: 25px;
+    margin-top: 5%;
+    padding-bottom: 0;
+}
+
+#texto{
+    opacity: 0.5;
+}
+.input{
+    width: 300px;
+}
+
+.alinhar{
+    text-align: center;
+}
+
+table{
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table th, td{
+    border: 1px solid black;
+    width: auto;
+    height: auto;
+    text-align: center;
+    padding: 2px;
+
+}
+
+.cellImpar{
+    background-color: lightgray;
+}
+
+.cellPar{
+    background-color: white;
+}
+
+.salario input{
+    width: 100px;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Gerente</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!--Importação do axios-->
+    <link rel="stylesheet" href="E - gerente.css">
+    
+</head>
+
+<body>
+    <div id="searchBox">
+        <div id="menu">
+            <img src="icone.png" id="imgHopt">
+        </div>
+        
+        <div id="searchBox-Itens">
+            <form>
+                <div class="alinhar">
+                    <input type="radio" name="opcao" onchange="buscar()" id="medico" class="opcoes"> Médico
+                    <input type="radio" name="opcao" onchange="buscar()" id="atendente" class="opcoes"> Atendente
+                </div>
+
+                <p id="texto">Selecione para buscar o médico / atendente</p>
+            </form>
+        </div>
+    </div>
+
+    <br>
+
+    <div id="result"></div>
+
+    <script src="E - gerente.js"></script>
+</body>
+</html>
