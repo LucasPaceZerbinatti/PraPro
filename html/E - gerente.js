@@ -15,7 +15,7 @@ function buscar(){
                 const data = response.data;
 
                 const tabela = document.createElement("table");
-                tabela.innerHTML = "<tr> <th>CRM</th> <th>Nome</th> <th>Telefone</th> <th>Salário</th> <th>Senha</th> <th>Demitir</th> </tr>";
+                tabela.innerHTML = "<tr> <th>CRM</th> <th>Nome</th> <th>Telefone</th> <th>Email</th> <th>Salário</th> <th>Senha</th> <th>Demitir</th> </tr>";
 
                 for(let medicos of data){
                     const linha = document.createElement("tr");
@@ -25,6 +25,7 @@ function buscar(){
                         <td class="cellImpar">${medicos.CRM}</td>
                         <td class="cellImpar">${medicos.nome}</td>
                         <td class="cellImpar">${medicos.telefone}</td>
+                        <td class="cellImpar">${medicos.email}</td>
                         <td class="cellImpar salario"> <input type="number" value="${medicos.salario}" onchange="modificarSalarioMed('${medicos.CRM}', this)"> </td>
                         <td class="cellImpar">${medicos.senha}</td>
                         <td class="cellImpar"> <button onclick="demitirMed('${medicos.CRM}')">X </td>`;
@@ -35,6 +36,7 @@ function buscar(){
                         <td class="cellPar">${medicos.CRM}</td>
                         <td class="cellPar">${medicos.nome}</td>
                         <td class="cellPar">${medicos.telefone}</td>
+                        <td class="cellPar">${medicos.email}</td>
                         <td class="cellPar salario"> <input type="number" value="${medicos.salario}" onchange="modificarSalarioMed('${medicos.CRM}', this)"> </td>
                         <td class="cellPar">${medicos.senha}</td>
                         <td class="cellPar"> <button onclick="demitirMed('${medicos.CRM}')">X </td>`;
@@ -163,14 +165,16 @@ function modificarSalarioMed(CRM, input){
             console.log('Inserção bem-sucedida:', response.data.message);
           } 
           
-          else {
+        else {
             console.error('Erro na solicitação:', response.data.error);
-          }
+        }
     })
 
     .catch(error => {
         console.error('Erro na solicitação:', error);
     })
+
+    buscar()
 }
 
 function modificarSalarioAte(CPF, input){
@@ -196,4 +200,6 @@ function modificarSalarioAte(CPF, input){
     .catch(error => {
         console.error('Erro na solicitação:', error);
     })
+
+    buscar()
 }

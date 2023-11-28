@@ -19,8 +19,11 @@ CREATE TABLE Hospital.Doctor(
 
 	PRIMARY KEY(CRM),
 
-	CHECK (telefone like '[0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
+	CHECK (telefone like '[0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]')
 )
+
+alter table Hospital.Doctor
+alter column salario money not null
 
 /* TABELA DE ATENDENTES */
 CREATE TABLE Hospital.Attendant(
@@ -36,6 +39,9 @@ CREATE TABLE Hospital.Attendant(
 	CHECK (CPF like '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-[0-9][0-9]'),
 	CHECK (telefone like '[0-9][0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]'),
 )
+
+alter table Hospital.Attendant
+alter column salario money not null
 
 ALTER TABLE Hospital.Attendant
 ADD UNIQUE(CPF)

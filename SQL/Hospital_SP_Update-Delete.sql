@@ -77,12 +77,21 @@ END
 
 /* DELETA OS DADOS RELACIONADOS AO(À) ATENDENTE */
 CREATE OR ALTER PROCEDURE DELETE_AteDemitido
-	@email varchar(60)
+	@CPF varchar(20)
 as
 BEGIN
 	BEGIN TRY
-		DELETE Hospital.UsernameAttendant where emailCadastrado = @email;
-		DELETE Hospital.Attendant where email = @email;
+		DECLARE @id int;
+		DECLARE C_Atendente cursor for SELECT idAtendente from Hospital.Attendant where CPF = @CPF;
+
+		OPEN C_Atendente;
+		FETCH C_Atendente INTO @id;
+
+		CLOSE C_Atendente;
+		DEALLOCATE C_Atendente;
+
+		DELETE Hospital.UsernameAttendant where idAtendente = @id;
+		DELETE Hospital.Attendant where idAtendente = @id;
 	END TRY
 
 	BEGIN CATCH

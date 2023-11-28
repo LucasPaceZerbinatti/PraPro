@@ -1,3 +1,31 @@
+/* EXCLUI ESPECIALIZAÇÕES CASO NÃO HAJA MÉDICOS QUE SÃO ESPECIALIZADOS */
+CREATE TRIGGER T_MedicoEspec on Hospital.DoctorSpecialization FOR DELETE as
+BEGIN
+	BEGIN TRY
+		DECLARE @especDeletada varchar(20),
+				@nEspecs int;
+
+		SELECT @especDeletada = idEspecializacao from deleted;
+
+		DECLARE C_Medicos cursor for SELECT COUNT(CRM) from Hospital.DoctorSpecialization where idEspecializacao = @especDeletada;
+		OPEN C_Medicos;
+		FETCH C_Medicos INTO @nEspecs;
+
+		if @nEspecs = 0
+			BEGIN
+				DELETE Hospital.Specialization where idEspecializacao = @especDeletada;
+			END
+
+		CLOSE C_Medicos;
+		DEALLOCATE C_Medicos;
+	END TRY
+
+	BEGIN CATCH
+		RAISERROR('Erro na deleção dos dados!', 15, 1);
+	END CATCH
+END
+
+/* NÃO PERMITE A INCLUSÃO DE PACIENTES COM IDADES ABSURDAS */
 create trigger T_Paciente on Hospital.Patient FOR INSERT, UPDATE as
 BEGIN
 	DECLARE @idade int,
@@ -14,36 +42,55 @@ BEGIN
 		END
 END
 
-create trigger T_Atendente on Hospital.Attendant FOR INSERT, UPDATE as
+/* NÃO PERMITE A INSERÇÃO DE SALÁRIOS INDEVIDOS */
+create trigger T_Atendente on Hospital.Attendant INSTEAD OF UPDATE as
 BEGIN
-	DECLARE @idade int,
-			@idInserido int,
-			@dataNascimento datetime;
+	DECLARE @idInserido int,
+			@salario money;
 
-	select @dataNascimento = dataNascimento, @idInserido = idAtendente from inserted;
-	set @idade = FLOOR(DATEDIFF(DAY, @DataNascimento, GETDATE()) / 365.25);
+	select @salario = salario, @idInserido = idAtendente from inserted;
 
-	if @idade < 0 OR @idade > 122
+	if @salario <= 0
 		BEGIN
-			delete Hospital.Attendant where idAtendente = @idInserido;
-			RAISERROR('Idade fora dos limites reais!', 15, 1);
+			RAISERROR('Salário inválido!', 15, 1);
 		END
+
+	else
+		UPDATE Hospital.Attendant set salario = @salario where idAtendente = @idInserido;
 END
 
-create trigger T_MedicosEspecs on Hospital.DoctorSpecialization FOR DELETE as
+/* NÃO PERMITE A ATUALIZAÇÃO DE SALÁRIOS INVÁLIDOS */
+CREATE TRIGGER T_Medicos on Hospital.Doctor INSTEAD OF UPDATE as
 BEGIN
-	DECLARE @idEspecExcluida int,
-			@qtsMedEspec int;
+	DECLARE @idInserido int,
+			@salario money;
 
-	select @idEspecExcluida = idEspecializacao from deleted;
+	select @salario = salario, @idInserido = CRM from inserted;
 
-	DECLARE C_quantSpec cursor for select COUNT(idMedicoEspecializacao) from Hospital.DoctorSpecialization where idEspecializacao = @idEspecExcluida;
-	OPEN C_quantSpec;
-	FETCH C_quantSpec INTO @qtsMedEspec;
+	if @salario <= 0
+		BEGIN
+			RAISERROR('Salário inválido!', 1, 1);
+		END
 
-	if @qtsMedEspec = 0
-		DELETE Hospital.Specialization where idEspecializacao = @idEspecExcluida;
+	else
+		UPDATE Hospital.Doctor set salario = @salario where CRM = @idInserido;
+END
 
-	CLOSE C_quantSpec;
-	DEALLOCATE C_quantSpec;
+/* NÃO PERMITE A INSERÇÃO DE MÉDICOS COM CRMs INVÁLIDAS */
+CREATE TRIGGER T_MedicosCRM on Hospital.Doctor INSTEAD OF INSERT as
+BEGIN
+	DECLARE @CRM int,
+			@nome varchar(30),
+			@sobrenome varchar(20),
+			@email varchar(60),
+			@telefone varchar(20),
+			@salario money;
+
+	select @CRM = CRM, @nome = nome, @sobrenome = sobrenome, @email = email, @telefone = telefone, @salario = salario from inserted;
+
+	if @CRM > 0
+		INSERT INTO Hospital.Doctor(CRM, nome, sobrenome, email, telefone, salario) values(@CRM, @nome, @sobrenome, @email, @telefone, 1300.0);
+
+	else
+		RAISERROR('CRM inválida!', 1, 1);
 END

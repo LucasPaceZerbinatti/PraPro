@@ -26,12 +26,12 @@ CREATE OR ALTER PROCEDURE POST_Paciente
 	@sobrenome varchar(20),
 	@email varchar(60),
 	@telefone varchar(20),
-	@data nvarchar,
+	@data varchar(15),
 	@estado varchar(2)
 as
 BEGIN
 	BEGIN TRY
-		INSERT INTO Hospital.Patient(CPF, nome, sobrenome, email, telefone, dataNascimento, estado) values(@CPF, @nome, @sobrenome, @email, @telefone, CONVERT(datetime, @data), @estado);
+		INSERT INTO Hospital.Patient(CPF, nome, sobrenome, email, telefone, dataNascimento, estado) values(@CPF, @nome, @sobrenome, @email, @telefone, CONVERT(datetime, @data, 102), @estado);
 	END TRY
 
 	BEGIN CATCH
