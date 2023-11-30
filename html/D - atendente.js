@@ -11,6 +11,7 @@ const mesFixo = data.getMonth()
 let mes = data.getMonth()
 let ano = data.getFullYear()
 var mesEscrito
+var vetorPaciente
 diasMes = 1
 
 function calendario() { 
@@ -155,14 +156,15 @@ if ((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) {
 }
 
 function fecharBox(){
+    resultCalendario.innerHTML = ""
     aparece.innerHTML = ``
     calendario2()
     enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
 }
 
-let dim = async () =>{
-    diaSelecionado = dia
+let dim = async (dia) =>{
     fecharBox()
+    diaSelecionado = dia
     window.document.querySelector(`#calendario${dia}`).removeAttribute("onclick")
     enviar({'metodo':'espec','dados1':'nulo','dados2':'nulo'})
     while (data2 == 'continue'){
@@ -172,12 +174,14 @@ let dim = async () =>{
     console.log(data2)
     vetorEspec = data2.split(";,")
     data2 = 'continue'
-    var elemento = `<div id="selects"><table id="tConsulta">
+    var elemento = `<div id="selects"><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
     <select class="dropBox">
     <option value="Especializações">Especializações</option>`
     for (let i = 0; i<vetorEspec.length-1; i++){
         elemento += `<option id="option${vetorEspec[i]}" value="${vetorEspec[i]}">${vetorEspec[i]}</option> `
     }
+    elemento += "</th>"
+    
     enviar({'metodo':'pegaMed','dados1':'nulo','dados2':'nulo'})
     while (data2 == 'continue'){
         const response2 = await axios.get('http://localhost:8080/calendario/')
@@ -187,15 +191,30 @@ let dim = async () =>{
     vetorMed = data2.split(";,")
     data2 = 'continue'
 
-    elemento += `<tr id="trConsulta">`
-    for (var i=0;i<vetorMed.length;i++){
-        elemento += `<th id="thConsulta">aw</th>`
+    for (var i=0;i<vetorMed.length-1;i++){
+        elemento += `<th id="thConsulta">${vetorMed[i]}</th>`
     }
     elemento += `</tr>`
+    enviar({'metodo':'preencheCalendario','dados1':dia,'dados2':mes+";,"+ano})
+    while (data2 == 'continue'){
+        const response2 = await axios.get('http://localhost:8080/calendario/')
+        data2 = response2.data
+    }
+    console.log(data2)
+    vetorPaciente = data2.split(";,")
+    data2 = 'continue'
     for(let vezes = 0; vezes <= 23; vezes++){
-        elemento += `<tr id="trConsulta">`
-        for (var i=0;i<7;i++){
-            elemento += `<td id="tdConsulta">aw</td>`
+        elemento += `<tr id="trConsulta"><th id="thConsulta">${vezes}:00</th>`
+        for (var i=0;i<vetorMed.length-1;i++){
+            for (var index = 0; index < vetorPaciente-1;index+=3){
+                if (parseInt(vetorPaciente[index]) == vezes && vetorMed[i] == vetorPaciente[index+1]){
+                    elemento += `<td id="tdConsulta">${vetorPaciente[index+2]}</td>`
+                }
+                else{
+                    elemento += `<td id="tdConsulta"></td>`
+                }
+            }
+            
         }
         elemento += `</tr>`
     }
