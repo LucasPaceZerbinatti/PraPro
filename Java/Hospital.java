@@ -37,8 +37,6 @@ public class Hospital {
         adiconaMedicos();
         adicionaAtendentes();
         adicionaPacientes();
-        adicionaConsultas();
-
         String[] aux = {};
         while (true) {
             try {
@@ -72,6 +70,18 @@ public class Hospital {
                             logarAtendente();
                             conexaohttp.post(mensagem);
                             break;
+                        case "espec":
+                            espec();
+                            conexaohttp.post(mensagem);
+                            break;
+                        case "pegarTodoCalendario":
+                            pegarTodoCalendario();
+                            conexaohttp.post(mensagem);
+                            break;
+                        case "pegaMed":
+                            pegaMed();
+                            conexaohttp.post(mensagem);
+                            break;
                         default:
                             break;
                     }
@@ -84,6 +94,20 @@ public class Hospital {
 
         }
 
+    }
+
+    public static void espec(){
+        mensagem = "";
+        try {
+            PreparedStatement stmtEspec = con.prepareStatement("select nomeEspec from Hospital.Specialization");
+            ResultSet resultEspec = stmtEspec.executeQuery();
+            while (resultEspec.next()) {
+                mensagem += resultEspec.getString("nomeEspec")+";,";
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(mensagem);
     }
 
     public static void consultaCalendario() {
@@ -118,7 +142,23 @@ public class Hospital {
     public static void logarAtendente(){
         String email = dados[1];
         String senha = dados[2];
-        
+        System.out.println(email);
+        try{
+            PreparedStatement stmtLogar = con.prepareStatement("select senha from Hospital.UsernameAttendant where emailCadastrado = '"+email+"'");
+            ResultSet resultLogar = stmtLogar.executeQuery();
+            while (resultLogar.next()){
+                if (resultLogar.getString("senha").equals(senha)){
+                    mensagem = "true";
+                }
+                else{
+                    mensagem = "false";
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+            mensagem = "false";
+        }
     }
 
     public static void logar() {
@@ -128,16 +168,23 @@ public class Hospital {
             CRM = 0;
         }
         System.out.println(CRM);
-        Medico medico = Vetores.buscaMedico(CRM);
-        String senha = dados[2];
-        if (medico != null && senha.equals(medico.getSenha())) {
-            mensagem = "true";
+        try{
+            PreparedStatement stmtLogar = con.prepareStatement("select senha from Hospital.UsernameDoctor where CRM = "+CRM);
+            ResultSet resultLogar = stmtLogar.executeQuery();
+            while (resultLogar.next()){
+                if (resultLogar.getString("senha").equals(dados[2])){
+                    mensagem = "true";
+                }
+                else{
+                    mensagem = "false";
+                }
+            }
         }
-
-        else {
+        catch(Exception e){
+            System.out.println(e.getMessage());
             mensagem = "false";
-
         }
+        
 
     }
 
@@ -161,6 +208,27 @@ public class Hospital {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public static void pegarTodoCalendario(){
+        mensagem = "";
+        try {
+            int mes = Integer.parseInt(dados[1]);
+            int ano = Integer.parseInt(dados[2]);
+            for (int i = 1; i <= 31; i++) {
+                PreparedStatement stmtData = con.prepareStatement(
+                        "select count(Hospital.query.idConsulta) as quantos from Hospital.query where YEAR(horaInicio) = "
+                                + ano + " and MONTH(horaInicio) = " + mes + " and DAY(horaInicio) = " + i);
+                ResultSet resultadoData = stmtData.executeQuery();
+                while (resultadoData.next()) {
+                    System.out.println(resultadoData.getInt("quantos"));
+                    mensagem += resultadoData.getInt("quantos") + ";,";
+                }
+                
+            } System.out.println(mensagem);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void enviaEstado() {
@@ -257,24 +325,5 @@ public class Hospital {
         }
     }
 
-    public static void adicionaConsultas() {
-        int i = 0;
-        try {
-            PreparedStatement stmt = con.prepareStatement("select * from Hospital.Query");
-            ResultSet resultado = stmt.executeQuery();
-            while (resultado.next()) {
-                Consulta consulta = new Consulta(resultado.getInt("idConsulta"), resultado.getTimestamp("horaInicio"),
-                        resultado.getTimestamp("horaFim"), resultado.getString("observacoes"),
-                        Vetores.buscaMedico(resultado.getInt("CRM")),
-                        Vetores.buscaPaciente(resultado.getInt("idPaciente")), resultado.getBoolean("concluido"),
-                        resultado.getString("medicamentos"));
-                consultas[i] = consulta;
-                System.out.println(consultas[i].toString());
-                i += 1;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
 }

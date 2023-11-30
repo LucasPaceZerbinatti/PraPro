@@ -1,5 +1,6 @@
 package Java;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.io.InputStreamReader;
@@ -39,13 +40,13 @@ public void post(String mensagem) throws IOException{
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     try {
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "text/plain"); //fala o que vai mandar
+        connection.setRequestProperty("Accept", "utf-8"); //fala o que vai mandar
 
         connection.setDoOutput(true); //fala que voce vai enviar algo
     
-        String jsonInputString = mensagem;
 
-        PrintStream printStream = new PrintStream(connection.getOutputStream());
+        PrintStream printStream = new PrintStream(connection.getOutputStream(), false, "UTF-8");
+        Charset.forName("utf-8").encode(mensagem);
         printStream.println("dados="+mensagem); //seta o que voce vai enviar
         connection.connect(); //envia para o servidor
     
@@ -55,7 +56,7 @@ public void post(String mensagem) throws IOException{
         String responseLine = null;
         while ((responseLine = br.readLine()) != null) {
         response.append(responseLine.trim());
-    }
+    } System.out.println(response);
 }
     } catch (Exception e) {
         System.out.println(e.getMessage());

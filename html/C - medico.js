@@ -1,7 +1,7 @@
 
-    let result = window.document.querySelector("#result");
-    let resultCalendario = window.document.querySelector("#resultCalendario");
-    let aparece = window.document.querySelector("#aparece");
+    var result = window.document.querySelector("#result");
+    var resultCalendario = window.document.querySelector("#resultCalendario");
+    var aparece = window.document.querySelector("#aparece");
     var listaMedicamentos = window.document.querySelector("#medicamentos")
     var vetorData
     var i

@@ -30,9 +30,10 @@ appJava.get('/',(req, res) => {
   res.send(metodo+";,"+dados1+";,"+dados2)
 })
 appJava.post('/', function requestHandler(request, response) {
+  request.setEncoding('utf-8')
   console.log(request.body.dados)
   dados = request.body.dados
-  response.send("coisa boa")
+  response.send(dados)
 
  app.get('/calendario/', (req, res) => {
     if (dados == null){
