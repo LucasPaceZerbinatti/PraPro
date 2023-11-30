@@ -10,6 +10,7 @@ h1{
     font-size: 25px;
 }
 #tConsulta, #thConsulta, #trConsulta, #tdConsulta {
+    margin: auto;
     border: black 2px;
     border-style: ridge;
     border-collapse: collapse;
@@ -19,19 +20,22 @@ h1{
     z-index: 6;
 }   
 #tConsulta{
-    position: absolute; left: 34%; top: 5%;
+    flex-wrap: nowrap; overflow: auto; width: 1050px; background-color: black;z-index: 9; position: relative;
 }
 
 #bota{
-    top: 20px;
-    left: 320px;
+    display: flex;
+    justify-self: flex-end;
     text-align: start;
     position: relative;
     border: solid 1.5px black;
     border-radius: 8px;
     width: auto;
     height: auto;
-    z-index: 6;
+    z-index: 10;
+}
+#selects{
+    display: grid;
 }
 
 #resultCalendario {

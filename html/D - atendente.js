@@ -174,7 +174,7 @@ let dim = async (dia) =>{
     console.log(data2)
     vetorEspec = data2.split(";,")
     data2 = 'continue'
-    var elemento = `<div id="selects"><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
+    var elemento = `<div id="selects"><button id="bota" onclick="fecharBox()">X</button><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
     <select class="dropBox">
     <option value="Especializações">Especializações</option>`
     for (let i = 0; i<vetorEspec.length-1; i++){
@@ -195,7 +195,7 @@ let dim = async (dia) =>{
         elemento += `<th id="thConsulta">${vetorMed[i]}</th>`
     }
     elemento += `</tr>`
-    enviar({'metodo':'preencheCalendario','dados1':dia,'dados2':mes+";,"+ano})
+    enviar({'metodo':'preencherCalendario','dados1':dia,'dados2':(mes+1)+";,"+ano})
     while (data2 == 'continue'){
         const response2 = await axios.get('http://localhost:8080/calendario/')
         data2 = response2.data
@@ -203,22 +203,25 @@ let dim = async (dia) =>{
     console.log(data2)
     vetorPaciente = data2.split(";,")
     data2 = 'continue'
+    
     for(let vezes = 0; vezes <= 23; vezes++){
         elemento += `<tr id="trConsulta"><th id="thConsulta">${vezes}:00</th>`
         for (var i=0;i<vetorMed.length-1;i++){
-            for (var index = 0; index < vetorPaciente-1;index+=3){
+            var achou = false
+            for (var index = 0; index < vetorPaciente.length-1;index+=3){
                 if (parseInt(vetorPaciente[index]) == vezes && vetorMed[i] == vetorPaciente[index+1]){
-                    elemento += `<td id="tdConsulta">${vetorPaciente[index+2]}</td>`
+                    elemento += `<td id="tdConsulta">${vetorPaciente[index + 2]}</td>`
+                    achou = true
                 }
-                else{
-                    elemento += `<td id="tdConsulta"></td>`
-                }
+            }
+            if (achou == false){
+                elemento += `<td id="tdConsulta"></td>`
             }
             
         }
         elemento += `</tr>`
     }
-    aparece.innerHTML += `${elemento}</table><button id="bota" onclick="fecharBox()">X</button></div>`
+    aparece.innerHTML += `${elemento}</table></div>`
 }
 
 function today(){
