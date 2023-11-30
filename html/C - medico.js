@@ -317,4 +317,4 @@ const teste2 = async() =>{
     }
 }
 
-teste2()
+setTimeout(teste2,500)

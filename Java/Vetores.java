@@ -36,4 +36,8 @@ public class Vetores {
         } return null;
     }
 
+    public static Atendente buscaAtendente(){
+        return null;
+    }
+
 }

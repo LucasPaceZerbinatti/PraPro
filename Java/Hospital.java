@@ -68,6 +68,10 @@ public class Hospital {
                         case "addMedicamento":
                             addMedicamento();
                             break;
+                        case "logarAtendente":
+                            logarAtendente();
+                            conexaohttp.post(mensagem);
+                            break;
                         default:
                             break;
                     }
@@ -109,6 +113,12 @@ public class Hospital {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    public static void logarAtendente(){
+        String email = dados[1];
+        String senha = dados[2];
+        
     }
 
     public static void logar() {
