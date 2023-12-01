@@ -196,6 +196,9 @@ function medicamentos(medicamento, id){
     medLista = medicamento.split('|')
     var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
     for (let index = 0; index < medLista.length; index++) {
+        if (medLista[index] == " "){
+            medLista[index] = ""
+        }
         elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
 }
     listaMedicamentos.innerHTML = elemento
@@ -209,7 +212,7 @@ function addMed(){
         var listaMedicamentos = window.document.querySelector("#medicamentos")
         for (let index = 0; index < medLista.length; index++) {
             medicamento.push(window.document.querySelector("#inp"+index).value)
-            if (medicamento[index] == ''){
+            if (medicamento[index] == '' || medicamento[index] == " "){
                 achou = true
             }
             elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medicamento[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
