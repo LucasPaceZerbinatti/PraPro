@@ -77,9 +77,7 @@ pegaCalendario()
 }
 
 const pegaCalendario = async() =>{
-    if (allowed == true){
         while (data2 == 'continue'){
-            allowed = false
             const response2 = await axios.get('http://localhost:8080/calendario/')
             data2 = response2.data
         }
@@ -87,11 +85,9 @@ const pegaCalendario = async() =>{
         vetorData = data2.split(';,')
         data2 = 'continue'
         console.log(vetorData)
-        allowed = true
         calendario2Atendente()
     }
 
-}
 function calendario2Atendente(){
     resultCalendario.innerHTML = ""
     diasMes = 1
@@ -110,12 +106,16 @@ function calendario2Atendente(){
         }
         i += 1
         diasMes += 1
-    
+
 }
+console.log('fois')
+
 
 }
 
 function esquerda() {
+    window.document.querySelectorAll(".botao")[0].removeAttribute("onclick")
+    window.document.querySelectorAll(".botao")[1].removeAttribute("onclick")
 if(mes != 0){
     mes -= 1
 }
@@ -126,9 +126,12 @@ else{
 diasMes = 1
 fecharBox()
 calendario()
+setTimeout(voltar, 2000)
 }
 
 function direita() {
+    window.document.querySelectorAll(".botao")[0].removeAttribute("onclick")
+    window.document.querySelectorAll(".botao")[1].removeAttribute("onclick")
     if(mes != 11){
         mes += 1
     }
@@ -139,7 +142,13 @@ function direita() {
     diasMes = 1
     fecharBox()
     calendario()
+    setTimeout(voltar, 2000)
     }
+
+function voltar(){
+    window.document.querySelectorAll(".botao")[1].setAttribute("onclick","direita()")    
+    window.document.querySelectorAll(".botao")[0].setAttribute("onclick","esquerda()")
+}
 
 function calcular_bissexto() {
 if ((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) {
@@ -158,9 +167,7 @@ function fecharBox(){
 }
 
 let dim = async (dia) =>{
-    fecharBox()
     diaSelecionado = dia
-    window.document.querySelector(`#calendario${dia}`).removeAttribute("onclick")
 
     var elemento = `<div id="selects"><button id="bota" onclick="fecharBox()">X</button><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
     <select class="dropBox">
@@ -235,10 +242,16 @@ const enviarForm = async(medico, horario) =>{
         console.log("deu ruim")
     }
     else {
+        resultCalendario.innerHTML = ""
+        aparece.innerHTML = ``
         fecharMarcar()
+        enviar({'metodo':'pegarTodoCalendario','dados1':mes+1,'dados2':ano})
+        pegaCalendario()
+        
     }
     
 }
+
 function fecharMarcar(){
     window.document.querySelector("#marcarConsulta").setAttribute("style","display:none")
     window.document.querySelector("#marcarConsulta").innerHTML = ""
