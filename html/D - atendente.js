@@ -13,6 +13,7 @@ let ano = data.getFullYear()
 var mesEscrito
 var vetorPaciente
 diasMes = 1
+var allowed = true
 
 function calendario() { 
 
@@ -76,17 +77,22 @@ pegaCalendario()
 }
 
 const pegaCalendario = async() =>{
-    while (data2 == 'continue'){
-        const response2 = await axios.get('http://localhost:8080/calendario/')
-        data2 = response2.data
+    if (allowed == true){
+        while (data2 == 'continue'){
+            allowed = false
+            const response2 = await axios.get('http://localhost:8080/calendario/')
+            data2 = response2.data
+        }
+        console.log(data2)
+        vetorData = data2.split(';,')
+        data2 = 'continue'
+        console.log(vetorData)
+        allowed = true
+        calendario2Atendente()
     }
-    console.log(data2)
-    vetorData = data2.split(';,')
-    data2 = 'continue'
-    console.log(vetorData)
-    calendario2()
+
 }
-function calendario2(){
+function calendario2Atendente(){
     resultCalendario.innerHTML = ""
     diasMes = 1
     i = 0
@@ -104,7 +110,9 @@ function calendario2(){
         }
         i += 1
         diasMes += 1
-    }
+    
+}
+
 }
 
 function esquerda() {
@@ -145,7 +153,7 @@ if ((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) {
 function fecharBox(){
     resultCalendario.innerHTML = ""
     aparece.innerHTML = ``
-    calendario2()
+    calendario2Atendente()
     enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
 }
 
@@ -153,14 +161,7 @@ let dim = async (dia) =>{
     fecharBox()
     diaSelecionado = dia
     window.document.querySelector(`#calendario${dia}`).removeAttribute("onclick")
-    enviar({'metodo':'espec','dados1':'nulo','dados2':'nulo'})
-    while (data2 == 'continue'){
-        const response2 = await axios.get('http://localhost:8080/calendario/')
-        data2 = response2.data
-    }
-    console.log(data2)
-    vetorEspec = data2.split(";,")
-    data2 = 'continue'
+
     var elemento = `<div id="selects"><button id="bota" onclick="fecharBox()">X</button><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
     <select class="dropBox">
     <option value="Especializações">Especializações</option>`
@@ -169,14 +170,7 @@ let dim = async (dia) =>{
     }
     elemento += "</th>"
     
-    enviar({'metodo':'pegaMed','dados1':'nulo','dados2':'nulo'})
-    while (data2 == 'continue'){
-        const response2 = await axios.get('http://localhost:8080/calendario/')
-        data2 = response2.data
-    }
-    console.log(data2)
-    vetorMed = data2.split(";,")
-    data2 = 'continue'
+
 
     for (var i=0;i<vetorMed.length-1;i++){
         elemento += `<th id="thConsulta">${vetorMed[i]}</th>`
@@ -250,7 +244,12 @@ function fecharMarcar(){
     window.document.querySelector("#marcarConsulta").innerHTML = ""
 }
 function today(){
-    resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()" style="color:blue;">${diasMes}<div>`
+    var texto = ""
+    numero = parseInt(vetorData[i])
+    for (indice = 0; indice<numero; indice++){
+        texto += "."
+    }
+    resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias" style="color:blue" onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p></div></div>`
 }
 const teste2 = async() =>{
     const response2 = await axios.get('http://localhost:8080/login/')
@@ -261,6 +260,22 @@ const teste2 = async() =>{
         result = window.document.querySelector("#result");
         resultCalendario = window.document.querySelector("#resultCalendario");
         aparece = window.document.querySelector("#aparece");
+        enviar({'metodo':'espec','dados1':'nulo','dados2':'nulo'})
+        while (data2 == 'continue'){
+            const response2 = await axios.get('http://localhost:8080/calendario/')
+            data2 = response2.data
+        }
+        console.log(data2)
+        vetorEspec = data2.split(";,")
+        data2 = 'continue'
+        enviar({'metodo':'pegaMed','dados1':'nulo','dados2':'nulo'})
+        while (data2 == 'continue'){
+            const response2 = await axios.get('http://localhost:8080/calendario/')
+            data2 = response2.data
+        }
+        console.log(data2)
+        vetorMed = data2.split(";,")
+        data2 = 'continue'
         calendario()
     }
     else{
