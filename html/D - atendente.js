@@ -87,6 +87,7 @@ const pegaCalendario = async() =>{
     calendario2()
 }
 function calendario2(){
+    resultCalendario.innerHTML = ""
     diasMes = 1
     i = 0
     while (diasMes <= qntsMes) {
@@ -119,32 +120,18 @@ fecharBox()
 calendario()
 }
 
-
 function direita() {
-if(mes != 0){
-    mes -= 1
-}
-else{
-    mes = 11
-    ano -= 1
-}
-diasMes = 1
-fecharBox()
-calendario()
-}
-
-function direita() {
-if(mes != 11){
-    mes += 1
-}
-else{
-    mes = 0
-    ano += 1
-}
-diasMes = 1
-fecharBox()
-calendario()
-}
+    if(mes != 11){
+        mes += 1
+    }
+    else{
+        mes = 0
+        ano += 1
+    }
+    diasMes = 1
+    fecharBox()
+    calendario()
+    }
 
 function calcular_bissexto() {
 if ((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) {
@@ -215,7 +202,7 @@ let dim = async (dia) =>{
                 }
             }
             if (achou == false){
-                elemento += `<td id="tdConsulta"></td>`
+                elemento += `<td id="tdConsulta" ondblclick="marcar('${vetorMed[i]}','${vezes}')"></td>`
             }
             
         }
@@ -224,6 +211,44 @@ let dim = async (dia) =>{
     aparece.innerHTML += `${elemento}</table></div>`
 }
 
+const marcar = async(medico, horario) =>{
+    console.log(medico)
+    console.log(horario)
+    var elemento = `<form id="form">
+    <h1 id="h1Form">Marcar Consulta <button onclick="fecharMarcar()">X</button></h1>
+    <label>CPF:</label>
+    <br>
+    <input id=CPF type="text" name="CPF" placeholder="000000000-00" pattern="[0-9]{9}-[0-9]{2}">
+    <br>
+    <label>Observações:</label>
+    <br>
+    <input id=Obs type="text" name="Obs">
+    <br>
+</form>
+<button id="botaoForm" onclick="enviarForm('${medico}','${horario}')">SALVAR</button>`
+    window.document.querySelector("#marcarConsulta").setAttribute("style","display:block")
+    window.document.querySelector("#marcarConsulta").innerHTML = elemento
+}
+
+const enviarForm = async(medico, horario) =>{
+    enviar({'metodo':'marcarConsulta','dados1':window.document.querySelector("#CPF").value, 'dados2':window.document.querySelector("#Obs").value+";,"+medico+";,"+horario+";,"+diaSelecionado+";,"+(mes+1)+";,"+ano})
+    while (data2 == 'continue'){
+        const response2 = await axios.get('http://localhost:8080/calendario/')
+        data2 = response2.data
+    }
+    console.log(data2)
+    if (data2 == 'erro'){
+        console.log("deu ruim")
+    }
+    else {
+        fecharMarcar()
+    }
+    
+}
+function fecharMarcar(){
+    window.document.querySelector("#marcarConsulta").setAttribute("style","display:none")
+    window.document.querySelector("#marcarConsulta").innerHTML = ""
+}
 function today(){
     resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}"  onclick="dim()" style="color:blue;">${diasMes}<div>`
 }

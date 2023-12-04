@@ -85,6 +85,10 @@ public class Hospital {
                             preencherCalendario();
                             conexaohttp.post(mensagem);
                             break;
+                        case "marcarConsulta":
+                            marcarConsulta();
+                            conexaohttp.post(mensagem);
+                            break;
                         default:
                             break;
                     }
@@ -97,6 +101,28 @@ public class Hospital {
 
         }
 
+    }
+
+    public static void marcarConsulta(){
+        String CPF = dados[1];
+        String obs = dados[2];
+        String nome = dados[3];
+        String horario = dados[4];
+        String dia = dados[5];
+        String mes = dados[6];
+        String ano = dados[7];
+        try {
+            PreparedStatement stmt = con.prepareStatement("exec marcaConsulta '"+CPF+"','"+obs+"','"+nome+"',"+dia+","+mes+","+ano+","+horario);
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                mensagem = result.getString("resultado");
+                
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            mensagem = "erro";
+        }
+        
     }
 
     public static void preencherCalendario(){
