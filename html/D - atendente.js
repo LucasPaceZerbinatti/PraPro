@@ -238,6 +238,7 @@ const enviarForm = async(medico, horario) =>{
         data2 = response2.data
     }
     console.log(data2)
+    data2 = 'continue'
     if (data2 == 'erro'){
         console.log("deu ruim")
     }
@@ -245,9 +246,8 @@ const enviarForm = async(medico, horario) =>{
         resultCalendario.innerHTML = ""
         aparece.innerHTML = ``
         fecharMarcar()
-        enviar({'metodo':'pegarTodoCalendario','dados1':mes+1,'dados2':ano})
-        pegaCalendario()
-        
+        enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
+        setTimeout(calendario,500)
     }
     
 }

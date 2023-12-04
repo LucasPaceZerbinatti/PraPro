@@ -181,6 +181,9 @@ function dim2(){
         else{
             var checkbox = "<input id='check"+vetorConsulta[i+5]+"' type='checkbox' onchange='estado("+vetorConsulta[i+5]+")' ></input>"
         }
+        if (vetorConsulta[i+3] == 'null'){
+            vetorConsulta[i+3] = " "
+        }
         elemento += `<tr id="trConsulta"><td id="tdConsulta">${vetorConsulta[i]}</td><td id="tdConsulta">${vetorConsulta[i+1]}</td><td id="tdConsulta">${vetorConsulta[i+2]}</td><td id="tdConsulta" class="tdMed${vetorConsulta[i+5]}" ondblclick="medicamentos('${vetorConsulta[i+3]}', '${vetorConsulta[i+5]}')">${vetorConsulta[i+3]}</td><td id="tdConsulta">${checkbox}</td>`
     }
    // aparece.innerHTML = `<textarea id="areatexto" cols="50" rows="20" readonly></textarea>`
