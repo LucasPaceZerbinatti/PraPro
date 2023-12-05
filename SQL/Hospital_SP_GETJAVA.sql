@@ -11,4 +11,9 @@ BEGIN
 	where p.idPaciente = q.idPaciente AND q.CRM = @CRM AND day(q.horaInicio) = @dia AND month(q.horaInicio) = @mes AND year(q.horaInicio) = @ano
 END
 
-create or alter procedure GET_
+create or alter procedure GET_MedEspecJAVA
+	@nomeEspec varchar(20)
+as
+BEGIN
+		SELECT * FROM V_DoctorSpec where nomeEspec = @nomeEspec ORDER BY nomeMedico;
+END

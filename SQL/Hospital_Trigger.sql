@@ -50,7 +50,7 @@ BEGIN
 
 	select @salario = salario, @idInserido = idAtendente from inserted;
 
-	if @salario <= 0
+	if @salario <= 0 AND @salario >= 150000
 		BEGIN
 			RAISERROR('Salário inválido!', 15, 1);
 		END
@@ -67,7 +67,7 @@ BEGIN
 
 	select @salario = salario, @idInserido = CRM from inserted;
 
-	if @salario <= 0
+	if @salario <= 0 AND @salario >= 150000
 		BEGIN
 			RAISERROR('Salário inválido!', 1, 1);
 		END
@@ -88,9 +88,9 @@ BEGIN
 
 	select @CRM = CRM, @nome = nome, @sobrenome = sobrenome, @email = email, @telefone = telefone, @salario = salario from inserted;
 
-	if @CRM > 0
+	if @CRM > 0 OR @salario <= 0 AND @salario >= 150000
 		INSERT INTO Hospital.Doctor(CRM, nome, sobrenome, email, telefone, salario) values(@CRM, @nome, @sobrenome, @email, @telefone, 1300.0);
 
 	else
-		RAISERROR('CRM inválida!', 1, 1);
+		RAISERROR('Dados inválidos!', 1, 1);
 END
