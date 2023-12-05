@@ -163,6 +163,7 @@ function modificarSalarioMed(CRM, input){
     .then(response => {
         if (response.status === 200) {
             console.log('Inserção bem-sucedida:', response.data.message);
+            buscar();
           } 
           
         else {
@@ -173,8 +174,6 @@ function modificarSalarioMed(CRM, input){
     .catch(error => {
         console.error('Erro na solicitação:', error);
     })
-
-    buscar()
 }
 
 function modificarSalarioAte(CPF, input){
@@ -190,6 +189,7 @@ function modificarSalarioAte(CPF, input){
     .then(response => {
         if (response.status === 200) {
             console.log('Inserção bem-sucedida:', response.data.message);
+            buscar()
           } 
           
           else {
@@ -200,6 +200,4 @@ function modificarSalarioAte(CPF, input){
     .catch(error => {
         console.error('Erro na solicitação:', error);
     })
-
-    buscar()
 }
