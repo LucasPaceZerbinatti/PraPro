@@ -14,7 +14,8 @@ var mesEscrito
 var vetorPaciente
 diasMes = 1
 var allowed = true
-
+var oldselect = null
+var vetorMedEspec
 function calendario() { 
 
 switch (mes) {
@@ -159,19 +160,20 @@ if ((ano % 4 == 0 && ano % 100 != 0) || ano % 400 == 0) {
 
 }
 
-function fecharBox(){
+async function fecharBox(){
     resultCalendario.innerHTML = ""
     aparece.innerHTML = ``
     calendario2Atendente()
-    enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
+    await pegarMedico()
 }
 
 let dim = async (dia) =>{
     diaSelecionado = dia
+    oldselect = null
 
     var elemento = `<div id="selects"><button id="bota" onclick="fecharBox()">X</button><table id="tConsulta"><tr id="trConsulta"><th id="thConsulta">
-    <select class="dropBox">
-    <option value="Especializações">Especializações</option>`
+    <select class="dropBox" onclick="filtrar(this)">
+    <option value="tudo" id="optiontudo">Especializações</option>`
     for (let i = 0; i<vetorEspec.length-1; i++){
         elemento += `<option id="option${vetorEspec[i]}" value="${vetorEspec[i]}">${vetorEspec[i]}</option> `
     }
@@ -211,7 +213,34 @@ let dim = async (dia) =>{
     }
     aparece.innerHTML += `${elemento}</table></div>`
 }
-
+const filtrar = async(selection) =>{
+    console.log(selection.value)
+    if (selection.value != oldselect && oldselect != null){
+        if (selection.value == "tudo"){
+            await pegarMedico()
+            aparece.innerHTML = ''
+            await dim(diaSelecionado)
+            window.document.querySelector(`#optiontudo`).innerHTML = "Especializações"
+        }
+        else {
+            enviar({'metodo':'pegarMedEspec','dados1':selection.value})
+            while (data2 == 'continue'){
+                const response2 = await axios.get('http://localhost:8080/calendarioAtendente/')
+                data2 = response2.data
+            }
+            console.log(data2)
+            vetorMedEspec = data2.split(";,")
+            vetorMed = vetorMedEspec
+            data2 = 'continue'
+            aparece. innerHTML = ''
+            console.log(selection.selectedIndex)
+            await dim(diaSelecionado)
+            window.document.querySelector(`#optiontudo`).innerHTML = selection.value
+        }     
+        
+    }
+    oldselect = selection.value
+}
 const marcar = async(medico, horario) =>{
     console.log(medico)
     console.log(horario)
@@ -252,6 +281,16 @@ const enviarForm = async(medico, horario) =>{
     
 }
 
+const pegarMedico = async() =>{
+    enviar({'metodo':'pegaMed','dados1':'nulo','dados2':'nulo'})
+        while (data2 == 'continue'){
+            const response2 = await axios.get('http://localhost:8080/calendario/')
+            data2 = response2.data
+        }
+        console.log(data2)
+        vetorMed = data2.split(";,")
+        data2 = 'continue'
+}
 function fecharMarcar(){
     window.document.querySelector("#marcarConsulta").setAttribute("style","display:none")
     window.document.querySelector("#marcarConsulta").innerHTML = ""
@@ -281,14 +320,7 @@ const teste2 = async() =>{
         console.log(data2)
         vetorEspec = data2.split(";,")
         data2 = 'continue'
-        enviar({'metodo':'pegaMed','dados1':'nulo','dados2':'nulo'})
-        while (data2 == 'continue'){
-            const response2 = await axios.get('http://localhost:8080/calendario/')
-            data2 = response2.data
-        }
-        console.log(data2)
-        vetorMed = data2.split(";,")
-        data2 = 'continue'
+        await pegarMedico()
         calendario()
     }
     else{

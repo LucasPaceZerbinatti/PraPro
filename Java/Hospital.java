@@ -89,6 +89,10 @@ public class Hospital {
                             marcarConsulta();
                             conexaohttp.post(mensagem);
                             break;
+                        case "pegarMedEspec":
+                            pegarMedEspec();
+                            conexaohttp.post(mensagem);
+                            break;
                         default:
                             break;
                     }
@@ -103,7 +107,22 @@ public class Hospital {
 
     }
 
-    public static void marcarConsulta(){
+    public static void pegarMedEspec() {
+        mensagem = "";
+        try {
+            PreparedStatement stmt = con.prepareStatement("exec GET_MedEspecJAVA '" + dados[1] + "'");
+            ResultSet result = stmt.executeQuery();
+            while (result.next()) {
+                mensagem += result.getString("nomeMedico") + ";,";
+            }
+            System.out.println(mensagem);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public static void marcarConsulta() {
         String CPF = dados[1];
         String obs = dados[2];
         String nome = dados[3];
@@ -112,27 +131,30 @@ public class Hospital {
         String mes = dados[6];
         String ano = dados[7];
         try {
-            PreparedStatement stmt = con.prepareStatement("exec marcaConsulta '"+CPF+"','"+obs+"','"+nome+"',"+dia+","+mes+","+ano+","+horario);
+            PreparedStatement stmt = con.prepareStatement("exec marcaConsulta '" + CPF + "','" + obs + "','" + nome
+                    + "'," + dia + "," + mes + "," + ano + "," + horario);
             ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 mensagem = result.getString("resultado");
-                
+
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             mensagem = "erro";
         }
-        
+
     }
 
-    public static void preencherCalendario(){
+    public static void preencherCalendario() {
         mensagem = "";
         System.out.println("entrou");
         try {
-            PreparedStatement stmt = con.prepareStatement("exec buscaPorData "+Integer.parseInt(dados[1])+", "+Integer.parseInt(dados[2])+", "+Integer.parseInt(dados[3]));
+            PreparedStatement stmt = con.prepareStatement("exec buscaPorData " + Integer.parseInt(dados[1]) + ", "
+                    + Integer.parseInt(dados[2]) + ", " + Integer.parseInt(dados[3]));
             ResultSet result = stmt.executeQuery();
-            while(result.next()){
-                mensagem += result.getInt("horario")+";,"+result.getString("medico")+";,"+result.getString("paciente")+";,";
+            while (result.next()) {
+                mensagem += result.getInt("horario") + ";," + result.getString("medico") + ";,"
+                        + result.getString("paciente") + ";,";
                 System.out.println(mensagem);
             }
             System.out.println(mensagem);
@@ -140,28 +162,31 @@ public class Hospital {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
     }
-    public static void pegaMed(){
+
+    public static void pegaMed() {
         mensagem = "";
         try {
-            PreparedStatement stmt = con.prepareStatement("select nome, sobrenome from Hospital.Doctor order by nome, sobrenome");
+            PreparedStatement stmt = con
+                    .prepareStatement("select nome, sobrenome from Hospital.Doctor order by nome, sobrenome");
             ResultSet result = stmt.executeQuery();
-            while (result.next()){
-                mensagem += result.getString("nome")+" "+result.getString("sobrenome")+";,";
+            while (result.next()) {
+                mensagem += result.getString("nome") + " " + result.getString("sobrenome") + ";,";
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        } System.out.println(mensagem);
+        }
+        System.out.println(mensagem);
     }
 
-    public static void espec(){
+    public static void espec() {
         mensagem = "";
         try {
             PreparedStatement stmtEspec = con.prepareStatement("select nomeEspec from Hospital.Specialization");
             ResultSet resultEspec = stmtEspec.executeQuery();
             while (resultEspec.next()) {
-                mensagem += resultEspec.getString("nomeEspec")+";,";
+                mensagem += resultEspec.getString("nomeEspec") + ";,";
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -198,23 +223,22 @@ public class Hospital {
 
     }
 
-    public static void logarAtendente(){
+    public static void logarAtendente() {
         String email = dados[1];
         String senha = dados[2];
         System.out.println(email);
-        try{
-            PreparedStatement stmtLogar = con.prepareStatement("select senha from Hospital.UsernameAttendant where emailCadastrado = '"+email+"'");
+        try {
+            PreparedStatement stmtLogar = con.prepareStatement(
+                    "select senha from Hospital.UsernameAttendant where emailCadastrado = '" + email + "'");
             ResultSet resultLogar = stmtLogar.executeQuery();
-            while (resultLogar.next()){
-                if (resultLogar.getString("senha").equals(senha)){
+            while (resultLogar.next()) {
+                if (resultLogar.getString("senha").equals(senha)) {
                     mensagem = "true";
-                }
-                else{
+                } else {
                     mensagem = "false";
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             mensagem = "false";
         }
@@ -227,23 +251,21 @@ public class Hospital {
             CRM = 0;
         }
         System.out.println(CRM);
-        try{
-            PreparedStatement stmtLogar = con.prepareStatement("select senha from Hospital.UsernameDoctor where CRM = "+CRM);
+        try {
+            PreparedStatement stmtLogar = con
+                    .prepareStatement("select senha from Hospital.UsernameDoctor where CRM = " + CRM);
             ResultSet resultLogar = stmtLogar.executeQuery();
-            while (resultLogar.next()){
-                if (resultLogar.getString("senha").equals(dados[2])){
+            while (resultLogar.next()) {
+                if (resultLogar.getString("senha").equals(dados[2])) {
                     mensagem = "true";
-                }
-                else{
+                } else {
                     mensagem = "false";
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             mensagem = "false";
         }
-        
 
     }
 
@@ -269,7 +291,7 @@ public class Hospital {
 
     }
 
-    public static void pegarTodoCalendario(){
+    public static void pegarTodoCalendario() {
         mensagem = "";
         try {
             int mes = Integer.parseInt(dados[1]);
@@ -283,8 +305,9 @@ public class Hospital {
                     System.out.println(resultadoData.getInt("quantos"));
                     mensagem += resultadoData.getInt("quantos") + ";,";
                 }
-                
-            } System.out.println(mensagem);
+
+            }
+            System.out.println(mensagem);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -383,6 +406,5 @@ public class Hospital {
             System.out.println(e.getMessage());
         }
     }
-
 
 }
