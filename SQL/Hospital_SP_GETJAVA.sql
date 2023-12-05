@@ -15,5 +15,5 @@ create or alter procedure GET_MedEspecJAVA
 	@nomeEspec varchar(20)
 as
 BEGIN
-	SELECT * FROM V_DoctorSpec where nomeEspec = @nomeEspec ORDER BY nomeMedico;
+		SELECT * FROM V_DoctorSpec where nomeEspec = @nomeEspec ORDER BY nomeMedico;
 END
