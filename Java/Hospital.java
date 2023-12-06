@@ -116,7 +116,7 @@ public class Hospital {
     public static void excluiConsulta(){
         mensagem = "";
         try {
-            PreparedStatement stmt = con.prepareStatement("exec excluiConsulta "+dados[1]+","+dados[2]+","+dados[3]+","+dados[4]+",'"+dados[5]+"'");
+            PreparedStatement stmt = con.prepareStatement("exec DELETE_DeletarConsultaJAVA "+dados[1]+","+dados[2]+","+dados[3]+","+dados[4]+",'"+dados[5]+"'");
             stmt.executeQuery();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -147,7 +147,7 @@ public class Hospital {
         String mes = dados[6];
         String ano = dados[7];
         try {
-            PreparedStatement stmt = con.prepareStatement("exec marcaConsulta '" + CPF + "','" + obs + "','" + nome
+            PreparedStatement stmt = con.prepareStatement("exec POST_MarcarConsultaJAVA '" + CPF + "','" + obs + "','" + nome
                     + "'," + dia + "," + mes + "," + ano + "," + horario);
             ResultSet result = stmt.executeQuery();
             while (result.next()) {
