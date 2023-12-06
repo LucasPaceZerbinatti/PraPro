@@ -94,3 +94,18 @@ BEGIN
 	else
 		RAISERROR('Dados inválidos!', 1, 1);
 END
+
+CREATE TRIGGER T_ConsultaConc on Hospital.Query FOR UPDATE
+as
+BEGIN
+	DECLARE @idConsulta int,
+			@estado int;
+
+	SELECT @idConsulta = idConsulta, @estado = concluido from inserted;
+
+	if @estado = 1
+		UPDATE Hospital.Query set horaFim = GETDATE() where idConsulta = @idConsulta;
+
+	else
+		UPDATE Hospital.Query set horaFim = null where idConsulta = @idConsulta;
+END
