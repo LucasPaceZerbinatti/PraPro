@@ -103,7 +103,7 @@ function calendario2Atendente(){
             for (indice = 0; indice<numero; indice++){
                 texto += "."
             }
-            resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias"  onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p></div></div>`
+            resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias"  onclick="dim(${diasMes})">${diasMes}<div><p style="font-size:30px">${texto}</p></div></div>`
         }
         i += 1
         diasMes += 1
@@ -259,7 +259,7 @@ const filtrar = async(selection) =>{
             aparece. innerHTML = ''
             console.log(selection.selectedIndex)
             await dim(diaSelecionado)
-            window.document.querySelector(`#optiontudo`).innerHTML = selection.value
+            window.document.querySelector(".dropBox").selectedIndex = selection.selectedIndex
         }     
         
     }
@@ -299,6 +299,7 @@ const enviarForm = async(medico, horario) =>{
         resultCalendario.innerHTML = ""
         aparece.innerHTML = ``
         fecharMarcar()
+        await pegarMedico()
         enviar({'metodo':'nulo','dados1':'nulo','dados2':'nulo'})
         setTimeout(calendario,500)
     }
@@ -325,7 +326,7 @@ function today(){
     for (indice = 0; indice<numero; indice++){
         texto += "."
     }
-    resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias" style="color:blue" onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p></div></div>`
+    resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias" style="color:blue" onclick="dim(${diasMes})">${diasMes}<div><p style="font-size:30px">${texto}</p></div></div>`
 }
 const teste2 = async() =>{
     const response2 = await axios.get('http://localhost:8080/login/')
