@@ -12,7 +12,6 @@ public class Hospital {
     public static int qtsMedicos = 0;
     public static int qtsPacientes = 0;
     public static Connection con;
-    public static ConnectionND conexao;
     public static String[] dados;
     public static String mensagem;
     public static int CRM;
@@ -115,6 +114,7 @@ public class Hospital {
 
     public static void excluiConsulta(){
         mensagem = "";
+        System.out.println("excluindo consulta");
         try {
             PreparedStatement stmt = con.prepareStatement("exec DELETE_DeletarConsultaJAVA "+dados[1]+","+dados[2]+","+dados[3]+","+dados[4]+",'"+dados[5]+"'");
             stmt.executeQuery();

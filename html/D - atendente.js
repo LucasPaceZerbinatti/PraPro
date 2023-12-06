@@ -231,8 +231,10 @@ const removeImg = (elemento, antigo) => {
 const deletar = async(horario, medico) =>{
     enviar({'metodo':'excluiConsulta','dados1':diaSelecionado,'dados2':(mes+1)+";,"+ano+";,"+horario+";,"+medico})
     aparece.innerHTML = ""
-    setTimeout(calendario,500)
-    await dim(diaSelecionado)
+    setTimeout(await calendario,1000)
+    setTimeout(() => {
+        dim(diaSelecionado)
+    }, 2000);
 }
 
 const filtrar = async(selection) =>{

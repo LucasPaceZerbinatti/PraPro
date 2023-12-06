@@ -106,7 +106,7 @@ function calendario2(){
 }
 const pegaCalendario = async() =>{
     while (data2 == 'continue'){
-        const response2 = await axios.get('http://localhost:8080/calendario/')
+        const response2 = await axios.get('http://localhost:8080/calendarioAtendente/')
         data2 = response2.data
     }
     console.log(data2)
