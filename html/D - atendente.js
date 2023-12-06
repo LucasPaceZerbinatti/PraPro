@@ -125,7 +125,8 @@ else{
     ano -= 1
 }
 diasMes = 1
-fecharBox()
+aparece.innerHTML = ""
+resultCalendario.innerHTML = ""
 calendario()
 setTimeout(voltar, 100)
 }
@@ -141,7 +142,8 @@ function direita() {
         ano += 1
     }
     diasMes = 1
-    fecharBox()
+    aparece.innerHTML = ""
+    resultCalendario.innerHTML = ""
     calendario()
     setTimeout(voltar, 100)
     }
@@ -200,7 +202,7 @@ let dim = async (dia) =>{
             var achou = false
             for (var index = 0; index < vetorPaciente.length-1;index+=3){
                 if (parseInt(vetorPaciente[index]) == vezes && vetorMed[i] == vetorPaciente[index+1]){
-                    elemento += `<td id="tdConsulta">${vetorPaciente[index + 2]}</td>`
+                    elemento += `<td id="tdConsulta" onmouseover="imgDeletar(this)" onmouseout="removeImg(this, '${vetorPaciente[index+2]}')" onclick="deletar('${vezes}','${vetorMed[i]}')">${vetorPaciente[index + 2]}</td>`
                     achou = true
                 }
             }
@@ -213,6 +215,26 @@ let dim = async (dia) =>{
     }
     aparece.innerHTML += `${elemento}</table></div>`
 }
+
+const imgDeletar = (elemento) => {
+    console.log('imgDeletar')
+    elemento.setAttribute("style","background-color:red")
+    elemento.innerHTML = ""
+}
+
+const removeImg = (elemento, antigo) => {
+    console.log('remove Img')
+    elemento.removeAttribute("style")
+    elemento.innerHTML = antigo
+}
+
+const deletar = async(horario, medico) =>{
+    enviar({'metodo':'excluiConsulta','dados1':diaSelecionado,'dados2':(mes+1)+";,"+ano+";,"+horario+";,"+medico})
+    aparece.innerHTML = ""
+    setTimeout(calendario,500)
+    await dim(diaSelecionado)
+}
+
 const filtrar = async(selection) =>{
     console.log(selection.value)
     if (selection.value != oldselect && oldselect != null){
@@ -333,5 +355,6 @@ function enviar(mensagem){
     axios.post("http://localhost:8080", mensagem)
     
 }
+
 
 setTimeout(teste2,500)

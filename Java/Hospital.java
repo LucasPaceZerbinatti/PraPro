@@ -93,6 +93,12 @@ public class Hospital {
                             pegarMedEspec();
                             conexaohttp.post(mensagem);
                             break;
+                        case "excluiConsulta":
+                            excluiConsulta();
+                            break;
+                        case "confirmar":
+                            conexaohttp.post("true");
+                            break;
                         default:
                             break;
                     }
@@ -105,6 +111,16 @@ public class Hospital {
 
         }
 
+    }
+
+    public static void excluiConsulta(){
+        mensagem = "";
+        try {
+            PreparedStatement stmt = con.prepareStatement("exec excluiConsulta "+dados[1]+","+dados[2]+","+dados[3]+","+dados[4]+",'"+dados[5]+"'");
+            stmt.executeQuery();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void pegarMedEspec() {
@@ -252,8 +268,7 @@ public class Hospital {
         }
         System.out.println(CRM);
         try {
-            PreparedStatement stmtLogar = con
-                    .prepareStatement("select senha from Hospital.UsernameDoctor where CRM = " + CRM);
+            PreparedStatement stmtLogar = con.prepareStatement("select senha from Hospital.UsernameDoctor where CRM = " + CRM);
             ResultSet resultLogar = stmtLogar.executeQuery();
             while (resultLogar.next()) {
                 if (resultLogar.getString("senha").equals(dados[2])) {

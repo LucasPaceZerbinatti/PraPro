@@ -1,27 +1,47 @@
 package Java;
-public class Atendente {
+public class Atendente extends Funcionario{
 
 private int idAtendente;
-private String nomeAtendente;
-private String sobrenome;
-private String email;
-private String telefone;
-private String senha;
 private String CPF;
-private double salario;
 
     public Atendente(int idAtendente, String nomeAtendente, String sobrenome, String email, String telefone, String senha, String CPF, double salario) {
+        super(salario,nomeAtendente,sobrenome,email,telefone,senha);
         this.idAtendente = idAtendente;
-        this.nomeAtendente = nomeAtendente;
-        this.sobrenome = sobrenome;
-        this.email = email;
-        this.telefone = telefone;
-        this.senha = senha;
         this.CPF = CPF;
-        this.salario = salario;
     }
-    public String toString(){
-        return this.idAtendente+" "+this.nomeAtendente+" "+this.sobrenome+" "+this.email+" "+this.telefone+" "+this.senha+" "+this.CPF+" "+this.salario;
+
+
+    public int getIdAtendente() {
+        return this.idAtendente;
     }
+
+    public void setIdAtendente(int idAtendente) {
+        this.idAtendente = idAtendente;
+    }
+
+    public String getCPF() {
+        return this.CPF;
+    }
+
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
+    }
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " idAtendente='" + getIdAtendente() + "'" +
+            ", CPF='" + getCPF() + "'" +
+            " salario='" + this.salario + "'" +
+            ", senha='" + this.senha + "'" +
+            ", nome='" + super.getNome() + "'" +
+            ", sobrenome='" + super.getSobrenome() + "'" +
+            ", email='" + super.getEmail() + "'" +
+            ", telefone='" + super.getTelefone() + "'" +
+            "}";
+    }
+
+
     }
                                                       

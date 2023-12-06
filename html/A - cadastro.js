@@ -253,3 +253,14 @@ function inserirMedico(){
       console.log('O campo de entrada está vazio.');
     }
   }
+
+  function enviar(mensagem){
+    axios.post("http://localhost:8080", mensagem)
+    
+}
+function confirmacao(){
+  enviar({'metodo':'confirmar'})
+}
+
+window.onbeforeunload = confirmacao()
+
