@@ -1,4 +1,4 @@
-/* EXCLUI ESPECIALIZAÇÕES CASO NÃO HAJA MÉDICOS QUE SÃO ESPECIALIZADOS */
+/* EXCLUI ESPECIALIZAÃ‡Ã•ES CASO NÃƒO HAJA MÃ‰DICOS QUE SÃƒO ESPECIALIZADOS */
 CREATE TRIGGER T_MedicoEspec on Hospital.DoctorSpecialization FOR DELETE as
 BEGIN
 	BEGIN TRY
@@ -21,11 +21,11 @@ BEGIN
 	END TRY
 
 	BEGIN CATCH
-		RAISERROR('Erro na deleção dos dados!', 15, 1);
+		RAISERROR('Erro na deleÃ§Ã£o dos dados!', 15, 1);
 	END CATCH
 END
 
-/* NÃO PERMITE A INCLUSÃO DE PACIENTES COM IDADES ABSURDAS */
+/* NÃƒO PERMITE A INCLUSÃƒO DE PACIENTES COM IDADES ABSURDAS */
 create trigger T_Paciente on Hospital.Patient FOR INSERT, UPDATE as
 BEGIN
 	DECLARE @idade int,
@@ -42,7 +42,7 @@ BEGIN
 		END
 END
 
-/* NÃO PERMITE A INSERÇÃO DE SALÁRIOS INDEVIDOS */
+/* NÃƒO PERMITE A INSERÃ‡ÃƒO DE SALÃRIOS INDEVIDOS */
 create trigger T_Atendente on Hospital.Attendant INSTEAD OF UPDATE as
 BEGIN
 	DECLARE @idInserido int,
@@ -50,16 +50,16 @@ BEGIN
 
 	select @salario = salario, @idInserido = idAtendente from inserted;
 
-	if @salario <= 0 AND @salario >= 150000
+	if @salario <= 0 OR @salario >= 150000
 		BEGIN
-			RAISERROR('Salário inválido!', 15, 1);
+			RAISERROR('SalÃ¡rio invÃ¡lido!', 15, 1);
 		END
 
 	else
 		UPDATE Hospital.Attendant set salario = @salario where idAtendente = @idInserido;
 END
 
-/* NÃO PERMITE A ATUALIZAÇÃO DE SALÁRIOS INVÁLIDOS */
+/* NÃƒO PERMITE A ATUALIZAÃ‡ÃƒO DE SALÃRIOS INVÃLIDOS */
 CREATE TRIGGER T_Medicos on Hospital.Doctor INSTEAD OF UPDATE as
 BEGIN
 	DECLARE @idInserido int,
@@ -67,16 +67,16 @@ BEGIN
 
 	select @salario = salario, @idInserido = CRM from inserted;
 
-	if @salario <= 0 AND @salario >= 150000
+	if @salario <= 0 OR @salario >= 150000
 		BEGIN
-			RAISERROR('Salário inválido!', 1, 1);
+			RAISERROR('SalÃ¡rio invÃ¡lido!', 1, 1);
 		END
 
 	else
 		UPDATE Hospital.Doctor set salario = @salario where CRM = @idInserido;
 END
 
-/* NÃO PERMITE A INSERÇÃO DE MÉDICOS COM CRMs INVÁLIDAS */
+/* NÃƒO PERMITE A INSERÃ‡ÃƒO DE MÃ‰DICOS COM CRMs INVÃLIDAS */
 CREATE TRIGGER T_MedicosCRM on Hospital.Doctor INSTEAD OF INSERT as
 BEGIN
 	DECLARE @CRM int,
@@ -88,9 +88,9 @@ BEGIN
 
 	select @CRM = CRM, @nome = nome, @sobrenome = sobrenome, @email = email, @telefone = telefone, @salario = salario from inserted;
 
-	if @CRM > 0 OR @salario <= 0 AND @salario >= 150000
+	if @CRM > 0 OR @salario <= 0 OR @salario >= 150000
 		INSERT INTO Hospital.Doctor(CRM, nome, sobrenome, email, telefone, salario) values(@CRM, @nome, @sobrenome, @email, @telefone, 1300.0);
 
 	else
-		RAISERROR('Dados inválidos!', 1, 1);
+		RAISERROR('Dados invÃ¡lidos!', 1, 1);
 END
