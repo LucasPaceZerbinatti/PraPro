@@ -1,0 +1,217 @@
+body {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-family: sans-serif;
+    background: white;
+  }
+  
+h1{
+    font-size: 25px;
+}
+#tConsulta, #thConsulta, #trConsulta, #tdConsulta {
+    margin: auto;
+    border: black 2px;
+    border-style: ridge;
+    border-collapse: collapse;
+    font-family: 'Trebuchet MS';
+    width: 600px;
+    background-color: #f0f0f0; /* Change to the desired background color */
+    z-index: 6;
+}   
+#tConsulta{
+    flex-wrap: nowrap; overflow: auto; width: 1050px; background-color: black;z-index: 9; position: relative;
+}
+
+#bota{
+    display: flex;
+    justify-self: flex-end;
+    text-align: start;
+    position: relative;
+    border: solid 1.5px black;
+    border-radius: 8px;
+    width: auto;
+    height: auto;
+    z-index: 10;
+}
+#selects{
+    display: grid;
+}
+
+#resultCalendario {
+    font-weight: 800;
+    font-size: 30px;
+    margin: 1px 0 0;
+    z-index: 5;
+    position: absolute;
+  }
+  
+#resultCalendario {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-top: 60px;
+    z-index: 5;
+}
+
+#resultCalendario .dias {
+    display: flex;
+    width: 7.5rem;
+    height: 7.5rem;
+    margin: 0.25rem;
+    flex-flow: column;
+    border-radius: 0.2rem;
+    padding: 1rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    z-index: 5;
+}
+
+
+.dias:hover{
+    color: red;
+    cursor: pointer;
+    z-index: 5;
+}
+
+#resultCalendario .hoje {
+    background: #ffffff70;
+}
+
+#resultCalendario .hoje .dias {
+    font-weight: 800;
+}
+
+.botao {
+    background: rgba(255, 255, 255, 0.25);    
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 5px solid rgba(255, 255, 255, 0.18);
+    width: 3rem;
+    height: 5rem;
+    font-weight: 800;
+}
+
+.botao:hover {
+    width: 3rem;
+    height: 5rem;
+    cursor: pointer;
+    animation: sombra 1s;
+    animation-fill-mode: forwards;
+}
+.botao:not(:hover){
+    animation: desombra 1s;
+}
+
+@keyframes sombra {
+    0% {
+        
+    }
+    100% {
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+}
+@keyframes desombra {
+    0% {
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+    100% {
+        box-shadow: none;
+    }
+
+}
+
+#result{
+    display: flex;
+    flex-flow: column;
+    text-orientation:upright;
+    writing-mode:vertical-rl;
+    position: absolute;
+    left: 3%;
+    top: 15%;
+    letter-spacing: -3px;
+    font-size: 40px;
+    opacity: 0.5;
+}
+#botas{
+display: flex;
+width: 1050px;
+height: 765px;
+align-items: center;
+justify-content: center;
+justify-content: space-between;
+position: absolute;
+z-index: 1;
+
+}
+
+#medicamentos{
+    position: absolute;
+    z-index: 9;
+    top: 100px;
+}
+
+.dropBox{
+    text-align: start;
+    width:120px;
+    height: auto;
+    position: relative;
+    z-index: 6;
+}
+
+h3{
+    font-size: 20px;
+}
+
+#marcarConsulta {
+    background-color:lightgray; color:black; margin: auto; padding: 15px; width: 350px; line-height: px; border-color:red; border-style: solid; font-weight: bold; font-family: Arial; line-height: 30px; z-index: 15; position: relative; top: -500px;
+}
+
+#CPF, #Obs {
+    border: white; border-radius: 3px; width: 350px; height: 30px;
+}
+
+#botaoForm {
+    background-color: red; position: relative; border: none; font-size: 20px; color: white; width: 350px; bottom: -10px;
+}
+
+
+#h1Form {
+    font-size: 20px; position: relative; top: -30px;color:white; background-color: red; text-align: center; width: 380px; right: 15px;
+}
+
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+    z-index: 20;
+  }
+  
+
+.topnav a {
+float: left;
+color: #f2f2f2;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 17px;
+}
+
+
+.topnav a:hover {
+background-color: #ddd;
+color: black;
+}
+
+.topnav a.active {
+background-color: red;
+color: white;
+}

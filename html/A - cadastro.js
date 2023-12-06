@@ -16,7 +16,7 @@ function mudarPagina(){
         medicoSobrenome.innerHTML = "Sobrenome:" + "<br>" + "<input type='text' class='input' id='sobrenome'>"   + "<br>";
 
         const medicoTelefone     = document.createElement("p");
-        medicoTelefone.innerHTML = "Telefone:"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
+        medicoTelefone.innerHTML = "Telefone: (ex: 12345-6789)"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
 
         const medicoEmail     = document.createElement("p");
         medicoEmail.innerHTML = "E-Mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
@@ -39,7 +39,7 @@ function mudarPagina(){
     else if (opcoesDeCadastro[1].checked){
         result.replaceChildren()
         const pacienteCPF     = document.createElement("p");
-        pacienteCPF.innerHTML = "CPF:" + "<br>" + "<input type='text' class='input' min='1' id='CPF'>" + "<br>";
+        pacienteCPF.innerHTML = "CPF: (ex: 123456789-01)" + "<br>" + "<input type='text' class='input' min='1' id='CPF'>" + "<br>";
 
         const pacienteNome     = document.createElement("p");
         pacienteNome.innerHTML = "Nome: " + "<br>" + "<input type='text' class='input' id='nome'>" + "<br>";
@@ -51,7 +51,7 @@ function mudarPagina(){
         pacienteDataNasc.innerHTML = "Data de Nascimento:"     + "<br>" + "<input type='date' class='input' id='dataNasci'>" + "<br>";
 
         const pacienteTelefone     = document.createElement("p");
-        pacienteTelefone.innerHTML = "Telefone:"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
+        pacienteTelefone.innerHTML = "Telefone: (ex: 12345-6789)"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
 
         const pacienteEmail     = document.createElement("p");
         pacienteEmail.innerHTML = "E-Mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>";
@@ -83,16 +83,16 @@ function mudarPagina(){
         atendenteSobrenome.innerHTML = "Sobrenome:" + "<br>" + "<input type='text' class='input' id='sobrenome'>"   + "<br>";
 
         const atendenteCPF  = document.createElement("p");
-        atendenteCPF.innerHTML = "CPF" + "<br>" + "<input type='text' class='input' id='CPF' min='1'>"   + "<br>";
+        atendenteCPF.innerHTML = "CPF: (ex: 123456789-01)" + "<br>" + "<input type='text' class='input' id='CPF' min='1'>"   + "<br>";
 
         const atendenteTelefone     = document.createElement("p");
-        atendenteTelefone.innerHTML = "Telefone:"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
+        atendenteTelefone.innerHTML = "Telefone: (ex: 12345-6789)"  + "<br>" + "<input type='text' class='input' id='telefone'>" + "<br>";
 
         const atendenteEmail     = document.createElement("p");
         atendenteEmail.innerHTML = "E-Mail: " + "<br>" + "<input type='text' class='input' id='email'>" + "<br>"
         
         const atendenteSenha     = document.createElement("p");
-        atendenteSenha.innerHTML = "Senha:"     + "<br>" + "<input type='text' class='input' id='senha'>";
+        atendenteSenha.innerHTML = "Senha:" + "<br>" + "<input type='text' class='input' id='senha'>";
 
         result.appendChild(atendenteCPF);
         result.appendChild(atendenteNome);
@@ -131,9 +131,9 @@ function inserirMedico(){
     const telefone  = document.getElementById('telefone').value;
     const email     = document.getElementById('email').value;
     const senha     = document.getElementById('senha').value;
-    const espec     = document.getElementById('espec').value;
+    const nomeEspec = document.getElementById('espec').value;
   
-    if(nome.trim() !== '' | sobrenome.trim() !== '' | telefone.trim() !== '' | email.trim() !== '' | senha.trim() !== '' | espec.trim() !== ''){
+    if(nome.trim() !== '' || sobrenome.trim() !== '' || telefone.trim() !== '' || email.trim() !== '' || senha.trim() !== '' || espec.trim() !== ''){
       axios.post('http://localhost:3000/postMedico', {
         CRM: CRM,
         nome: nome,
@@ -141,7 +141,7 @@ function inserirMedico(){
         telefone: telefone,
         email: email,
         senha: senha,
-        espec: espec
+        espec: nomeEspec
       }, {
         headers: {
           'Content-Type': 'application/json'
@@ -166,7 +166,7 @@ function inserirMedico(){
     else{
       console.log('O campo de entrada está vazio.');
     }
-  }
+}
   
   function inserirAtendente(){
     const CPF       = document.getElementById('CPF').value;
@@ -253,3 +253,14 @@ function inserirMedico(){
       console.log('O campo de entrada está vazio.');
     }
   }
+
+  function enviar(mensagem){
+    axios.post("http://localhost:8080", mensagem)
+    
+}
+function confirmacao(){
+  enviar({'metodo':'confirmar'})
+}
+
+window.onbeforeunload = confirmacao()
+

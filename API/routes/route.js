@@ -6,22 +6,20 @@ const controller = require('../controllers/controller');
 // rotas
 router.get('/', controller.getRaiz);
 router.get('/getMedicos', controller.getMedicos);
-router.get('/getPacientes', controller.getPacientes);
 router.get('/getAtendentes', controller.getAtendentes);
-router.get('/getConsultas', controller.getConsultas);
-router.get('/getEspecializacao', controller.getEspecializacao);
 
-router.get('/getMedicoPendente', controller.getMedicoPendente);
-router.get('/getMedicoConcluido', controller.getMedicoConcluido);
-router.get('/getPacientePendente', controller.getPacientePendente);
-router.get('/getPacienteConcluido', controller.getPacienteConcluido);
-router.get('/getPacienteCincoUltimas', controller.getPacienteCincoUltimas);
+router.post('/postMedico', controller.postMedico);       // insere médicos
+router.post('/postAtendente', controller.postAtendente); // insere atendentes
+router.post('/postPaciente', controller.postPaciente);   // insere pacientes
+router.post('/postConsulta', controller.postConsulta);   // insere insere consultas
 
-router.post('/postEspecializacao', controller.postEspecializacao);
-router.post('/postMedico', controller.postMedico);       // médicos
-router.post('/postAtendente', controller.postAtendente); // atendentes
-router.post('/postPaciente', controller.postPaciente);   // pacientes
-router.post('/postConsulta', controller.postConsulta);   // insere consultas
+router.put('/putMedicoSenha', controller.putMedicoSenha);           // altera senha de médicos
+router.put('/putAtendenteSenha', controller.putAtendenteSenha);     // altera senha de atendentes
+router.put('/putMedicoSalario', controller.putMedicoSalario);       // altera salário de médicos
+router.put('/putAtendenteSalario', controller.putAtendenteSalario); // altera salário de atendentes
+
+router.delete('/deleteMedicosDemitido', controller.deleteMedicosDemitido);      // deleta os registros de um médico
+router.delete('/deleteAtendenteDemitido', controller.deleteAtendenteDemitido);  // deleta os registros de um funcionário
 
 // o módulo do arquivo será exportado através da constante router
 module.exports = router;

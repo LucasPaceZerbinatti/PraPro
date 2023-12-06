@@ -1,12 +1,11 @@
 package Java;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.PrintStream;
-import java.util.Scanner;
-import java.io.OutputStream;
 public class Conexaohttp {
     private HttpURLConnection con;
     private URL url;
@@ -19,10 +18,11 @@ public Conexaohttp() throws IOException{
 public void get() throws IOException{
     int status = con.getResponseCode();
     BufferedReader in = new BufferedReader(
-    new InputStreamReader(con.getInputStream()));
+    new InputStreamReader(con.getInputStream(), "UTF-8"));
     String inputLine;
     StringBuffer content = new StringBuffer();
     while ((inputLine = in.readLine()) != null) {
+        Charset.forName("UTF-8").encode(inputLine);
     content.append(inputLine);
 }
 this.data = content.toString();
@@ -39,13 +39,13 @@ public void post(String mensagem) throws IOException{
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     try {
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "text/plain"); //fala o que vai mandar
+        connection.setRequestProperty("Accept", "utf-8"); //fala o que vai mandar
 
         connection.setDoOutput(true); //fala que voce vai enviar algo
     
-        String jsonInputString = mensagem;
 
-        PrintStream printStream = new PrintStream(connection.getOutputStream());
+        PrintStream printStream = new PrintStream(connection.getOutputStream(), false, "UTF-8");
+        Charset.forName("utf-8").encode(mensagem);
         printStream.println("dados="+mensagem); //seta o que voce vai enviar
         connection.connect(); //envia para o servidor
     
@@ -55,7 +55,7 @@ public void post(String mensagem) throws IOException{
         String responseLine = null;
         while ((responseLine = br.readLine()) != null) {
         response.append(responseLine.trim());
-    }
+    } System.out.println(response);
 }
     } catch (Exception e) {
         System.out.println(e.getMessage());
