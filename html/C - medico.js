@@ -190,13 +190,21 @@ function dim2(){
 
 function medicamentos(medicamento, id){
     idConsulta = id
+    let num = 0
     console.log(medicamento)
     console.log(id)
     var listaMedicamentos = window.document.querySelector("#medicamentos")
     medLista = medicamento.split('|')
     var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
     for (let index = 0; index < medLista.length; index++) {
-        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medLista[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
+        if (medLista[index] != " "){
+            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${num}" type='text' value='${medLista[num]}'</input><button onclick="subMed(${num})">-</button></th></tr>`
+            
+        }  
+        else {
+            num--
+        }
+        num++
 }
     listaMedicamentos.innerHTML = elemento
 }
@@ -205,23 +213,37 @@ function addMed(){
         var medicamento = [];
         var achou = false;
         console.log(medicamento)
+        var da = true
         var elemento = `<table id="tMed"><tr id="trMed"><th id="thMed">MEDICAMENTOS <button onclick="addMed()">+</button><button onclick='fecharMed()'>x</button></th></tr>`
         var listaMedicamentos = window.document.querySelector("#medicamentos")
         for (let index = 0; index < medLista.length; index++) {
-            medicamento.push(window.document.querySelector("#inp"+index).value)
-            if (medicamento[index] == ''){
+            try {
+                medicamento.push(window.document.querySelector("#inp"+index).value)
+            } catch (error) {
+                da = false
+                continue
+                
+            }
+           
+            if (medicamento[index] == '' || medicamento[index] == " "){
                 achou = true
             }
             elemento += `<tr id="trMed"><th id="thMed"><input id="inp${index}" type='text' value='${medicamento[index]}'</input><button onclick="subMed(${index})">-</button></th></tr>`
     }
     if (achou == false){
-        elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length}" type='text'</input><button onclick="subMed(${medLista.length})">-</button></th></tr>`
-        listaMedicamentos.innerHTML = elemento
         console.log(medLista)
-        medLista.push('')   
+        if (da == true){
+            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length}" type='text'</input><button onclick="subMed(${medLista.length})">-</button></th></tr>`
+            medLista.push('')   
+        }
+        else{
+            elemento += `<tr id="trMed"><th id="thMed"><input id="inp${medLista.length-1}" type='text'</input><button onclick="subMed(${medLista.length-1})">-</button></th></tr>`
+        }
+        listaMedicamentos.innerHTML = elemento
+        }
+
     }
  
-}
 function subMed(id){
     var medicamento = []
     console.log(id)
@@ -263,9 +285,6 @@ function fecharMed(){
     
     listaMedicamentos.innerHTML = ""
     window.document.querySelector(".tdMed"+idConsulta).innerHTML = totalMedicamentos;
-    dim(diaSelecionado)
-
-
 }
 
 function estado(id){
@@ -290,7 +309,7 @@ function today(){
     for (indice = 0; indice<numero; indice++){
         texto += "."
     }
-    resultCalendario.innerHTML += `<div id="calendario" class="dias" id="${diasMes}" style="color:blue;" onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p>`}
+    resultCalendario.innerHTML += `<div id="calendario${diasMes}" class="dias" style="color:blue;" onclick="dim(${diasMes})">${diasMes}<div><p>${texto}</p>`}
 
 
 
