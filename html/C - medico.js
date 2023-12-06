@@ -285,9 +285,12 @@ function fecharMed(){
     else {
         enviar({"metodo":"addMedicamento","dados1":idConsulta, "dados2":' '})
     }
-    
     listaMedicamentos.innerHTML = ""
-    window.document.querySelector(".tdMed"+idConsulta).innerHTML = totalMedicamentos;
+    window.document.querySelector(".tdMed"+idConsulta).innerHTML = totalMedicamentos;  
+    setTimeout(()=> {
+        dim(diaSelecionado)
+    },500)
+ 
 }
 
 function estado(id){
